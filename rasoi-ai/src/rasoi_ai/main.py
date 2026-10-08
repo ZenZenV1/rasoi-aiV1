@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 
 from fastapi import FastAPI, File, UploadFile, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from .models import (
     DetectionResponse,
@@ -35,7 +36,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-STATIC_HTML_PATH = Path(__file__).parent / "static" / "index.html"
+STATIC_DIR = Path(__file__).parent / "static"
+STATIC_HTML_PATH = STATIC_DIR / "index.html"
+
+# Mount /static directory for icons, manifest, and assets
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+
+@app.get("/manifest.json")
+def get_manifest():
+    return FileResponse(STATIC_DIR / "manifest.json", media_type="application/manifest+json")
+
+
+@app.get("/sw.js")
+def get_sw():
+    return FileResponse(STATIC_DIR / "sw.js", media_type="application/javascript")
 
 
 @app.get("/", response_class=HTMLResponse)
