@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RasoiAI — Smart Indian Kitchen & Recipe Assistant</title>
   
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#f59e0b">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RasoiAI">
+  <link rel="apple-touch-icon" href="/static/icon-192.png">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -1636,6 +1645,15 @@ Dhanyavaad! ✨`;
 
     // Initialize Lucide Icons
     lucide.createIcons();
+
+    // Register PWA Service Worker for Mobile App Installation
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('RasoiAI ServiceWorker registered:', reg.scope))
+          .catch(err => console.log('RasoiAI ServiceWorker registration failed:', err));
+      });
+    }
   </script>
 </body>
 </html>
