@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RasoiAI — Smart Indian Kitchen & Recipe Assistant</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            saffron: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            },
+            cardamom: {
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+            },
+            mirch: {
+              500: '#ef4444',
+              600: '#dc2626',
+            },
+            deep: {
+              900: '#0c121e',
+              950: '#060911',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Rozha One"', 'serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'scan-beam': 'scanBeam 2.5s ease-in-out infinite alternate',
+            'shimmer': 'shimmer 2s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' },
+            },
+            scanBeam: {
+              '0%': { top: '0%' },
+              '100%': { top: '96%' },
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Rozha One & Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Rozha+One&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Canvas Confetti for Celebrations -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #060911;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+    .devanagari {
+      font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
+    }
+    .hero-title {
+      font-family: 'Rozha One', serif;
+    }
+    /* Ambient Glows */
+    .glow-amber {
+      box-shadow: 0 0 50px -10px rgba(245, 158, 11, 0.25);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 50px -10px rgba(16, 185, 129, 0.25);
+    }
+    .glow-card {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glow-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px -8px rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+    /* Glassmorphism */
+    .glass-panel {
+      background: rgba(13, 19, 34, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(18, 26, 46, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #060911;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #d97706;
+    }
+    /* Checked item strikethrough animation */
+    .scratch-off {
+      text-decoration: line-through;
+      opacity: 0.5;
+      transition: all 0.2s ease;
+    }
+  </style>
+</head>
+<body class="relative min-h-screen selection:bg-amber-500 selection:text-slate-950">
+
+  <!-- Interactive Floating Background Spice Particle Canvas -->
+  <canvas id="spiceCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+  <!-- Ambient Gradient Orbs -->
+  <div class="fixed top-[-150px] left-[-150px] w-[500px] h-[500px] bg-amber-600/15 rounded-full blur-[120px] pointer-events-none z-0"></div>
+  <div class="fixed top-[40%] right-[-150px] w-[500px] h-[500px] bg-emerald-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-[-150px] left-[30%] w-[500px] h-[500px] bg-rose-600/10 rounded-full blur-[130px] pointer-events-none z-0"></div>
+
+  <!-- MAIN APP CONTAINER -->
+  <div class="relative z-10 max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-8">
+    
+    <!-- TOP NAVIGATION & HOSPITALITY BAR -->
+    <header class="glass-panel rounded-3xl p-4 md:p-6 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 border border-slate-800/80">
+      <div class="flex items-center gap-4">
+        <!-- Logo Emblem -->
+        <div class="relative group cursor-pointer" id="logoEmblem">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 flex items-center justify-center text-3xl shadow-lg shadow-amber-500/25 group-hover:scale-105 transition transform">
+            🍲
+          </div>
+          <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-950 rounded-full animate-ping"></span>
+          <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-950 rounded-full"></span>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2">
+              <span>RasoiAI</span>
+              <span class="text-base text-amber-400 font-normal devanagari opacity-90">| रसोइ एआई</span>
+            </h1>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">
+              Desi Kitchen AI
+            </span>
+          </div>
+          <!-- Polite Greeting & Time-of-Day message -->
+          <p id="greetingBanner" class="text-xs text-slate-300 mt-1 flex items-center gap-1.5 font-medium">
+            <span id="timeIcon">✨</span>
+            <span id="greetingText">Namaste Chef! Welcome to your digital Rasoi 🙏</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Utilities: Masala Dabba, Sound FX, API Docs -->
+      <div class="flex items-center gap-2 self-end md:self-auto flex-wrap">
+        <!-- Masala Dabba Button -->
+        <button id="openMasalaDabbaBtn" class="px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold flex items-center gap-2 transition hover:scale-105 shadow-sm">
+          <span>🌶️ Masala Dabba (Pantry)</span>
+        </button>
+
+        <!-- Sound Toggle -->
+        <button id="soundToggleBtn" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs flex items-center justify-center transition" title="Toggle Culinary Chimes">
+          <i data-lucide="volume-2" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Swagger Docs Link -->
+        <a href="/docs" target="_blank" class="px-3 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800 text-xs font-semibold flex items-center gap-1.5 transition">
+          <span>API Docs</span>
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- STEPPER BAR WITH ANIMATED HIGHLIGHTS -->
+    <div class="grid grid-cols-3 gap-2.5 md:gap-4">
+      <div id="stepTab1" class="p-3.5 rounded-2xl border border-amber-500/50 bg-amber-500/10 text-amber-300 flex items-center gap-3 transition-all shadow-lg shadow-amber-500/10">
+        <span class="w-7 h-7 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs flex items-center justify-center shadow-md">1</span>
+        <div>
+          <span class="block text-xs font-bold text-white">Scan Kitchen</span>
+          <span class="text-[10px] text-amber-300/80 hidden sm:inline">Fridge / Basket photo</span>
+        </div>
+      </div>
+
+      <div id="stepTab2" class="p-3.5 rounded-2xl border border-slate-800 bg-slate-900/40 text-slate-400 flex items-center gap-3 transition-all">
+        <span class="w-7 h-7 rounded-xl bg-slate-800 text-slate-400 font-bold text-xs flex items-center justify-center">2</span>
+        <div>
+          <span class="block text-xs font-bold text-slate-300">Confirm Items</span>
+          <span class="text-[10px] text-slate-500 hidden sm:inline">Sabziyan & dairy grid</span>
+        </div>
+      </div>
+
+      <div id="stepTab3" class="p-3.5 rounded-2xl border border-slate-800 bg-slate-900/40 text-slate-400 flex items-center gap-3 transition-all">
+        <span class="w-7 h-7 rounded-xl bg-slate-800 text-slate-400 font-bold text-xs flex items-center justify-center">3</span>
+        <div>
+          <span class="block text-xs font-bold text-slate-300">Cook & Grocery</span>
+          <span class="text-[10px] text-slate-500 hidden sm:inline">Matched recipes & list</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- STEP 1: SCAN KITCHEN & INGREDIENT INPUT -->
+    <!-- ========================================== -->
+    <section id="step1Section" class="glass-panel rounded-3xl p-6 md:p-8 space-y-6 glow-amber">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800/80 pb-4">
+        <div>
+          <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2">
+            <span>Step 1: Scan Your Fridge or Kitchen Basket</span>
+            <span class="text-xs font-normal text-amber-400 devanagari">| रसोई का मुआयना</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            Gemini 3.8 Flash Vision detects raw vegetables, paneer, curd, milk, produce, and herbs with Indian culinary expertise.
+          </p>
+        </div>
+        <div class="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full self-start md:self-auto">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Multimodal Vision Ready</span>
+        </div>
+      </div>
+
+      <!-- Input Tri-Split: Live Camera / Upload Dropzone / Authentic Sample Fridge -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left 7 Cols: Dropzone & Live Camera Preview -->
+        <div class="lg:col-span-7 flex flex-col space-y-4">
+          <!-- Dropzone Container -->
+          <div id="dropzone" class="relative group border-2 border-dashed border-slate-700 hover:border-amber-500/80 rounded-3xl p-6 text-center cursor-pointer transition-all bg-slate-950/60 flex flex-col items-center justify-center min-h-[260px] overflow-hidden">
+            <input type="file" id="fileInput" accept="image/*" class="hidden" />
+
+            <!-- Default Dropzone Prompt -->
+            <div id="dropzoneContent" class="space-y-3 z-10">
+              <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-3xl group-hover:scale-110 transition">
+                📸
+              </div>
+              <div>
+                <p class="text-sm font-bold text-white">Click or drag & drop fridge / sabzi photo</p>
+                <p class="text-xs text-slate-400 mt-0.5">Supports high-res JPG, PNG, WEBP from your phone or camera</p>
+              </div>
+              <div class="flex items-center justify-center gap-2 text-[11px] text-amber-400/90 font-medium pt-1">
+                <span>⚡ Auto-compressed for 10x faster scans</span>
+              </div>
+            </div>
+
+            <!-- Image Preview Element -->
+            <img id="imagePreview" class="hidden max-h-64 w-auto rounded-2xl object-cover shadow-2xl border border-slate-700/80 z-10" alt="Kitchen scan preview" />
+
+            <!-- Animated Holographic Scanner Laser Overlay -->
+            <div id="scannerLaser" class="hidden absolute inset-0 z-20 pointer-events-none">
+              <!-- Grid overlay -->
+              <div class="absolute inset-0 bg-[linear-gradient(to_right,#10b98115_1px,transparent_1px),linear-gradient(to_bottom,#10b98115_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+              <!-- Moving laser line -->
+              <div class="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_15px_#10b981] animate-scan-beam"></div>
+              <!-- Scanner reticle -->
+              <div class="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-emerald-400"></div>
+              <div class="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-emerald-400"></div>
+              <div class="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-emerald-400"></div>
+              <div class="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-emerald-400"></div>
+              <!-- Live HUD text -->
+              <div id="scannerStatusText" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-950/90 border border-emerald-500/40 text-emerald-300 font-mono text-[11px] px-3.5 py-1 rounded-full shadow-lg">
+                Analyzing produce & dairy...
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Controls below Dropzone -->
+          <div class="flex items-center gap-2">
+            <button id="openCameraBtn" class="flex-1 py-2.5 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center justify-center gap-2 transition">
+              <i data-lucide="camera" class="w-4 h-4 text-amber-400"></i>
+              <span>Live Webcam Shutter</span>
+            </button>
+            <button id="resetImageBtn" class="hidden py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-rose-900/40 text-rose-300 text-xs font-semibold border border-slate-700 transition" title="Clear Image">
+              ✕ Clear
+            </button>
+          </div>
+        </div>
+
+        <!-- Right 5 Cols: Action Buttons & Desi Sample Fridge -->
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
+          
+          <!-- Sample Indian Fridge Card -->
+          <div class="glass-card rounded-2xl p-5 border border-amber-500/20 relative overflow-hidden flex-1 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  Instant Demo Preset
+                </span>
+                <span class="text-xs text-slate-400">⚡ 0s Scan</span>
+              </div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <span>Classic Indian Fridge Basket</span>
+                <span>🇮🇳</span>
+              </h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                No fridge photo right now? Load our realistic home fridge containing:
+                <span class="text-amber-300 font-medium">Paneer, Shimla Mirch, Tamatar, Hari Mirch, Dahi, Adrak, Pyaz, Dhaniya</span>.
+              </p>
+              
+              <!-- Tag preview -->
+              <div class="flex flex-wrap gap-1.5 pt-1">
+                <span class="text-[10px] px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">🧀 Paneer</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">🫑 Capsicum</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">🍅 Tamatar</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">🥛 Dahi</span>
+              </div>
+            </div>
+
+            <button id="sampleBtn" class="mt-4 w-full py-3 px-4 bg-gradient-to-r from-slate-800 to-slate-900 hover:from-amber-600/30 hover:to-amber-500/30 text-amber-300 font-bold text-xs rounded-xl border border-amber-500/40 transition flex items-center justify-center gap-2 hover:scale-[1.02] shadow-md">
+              <span>⚡ Load Desi Sample Fridge (Instant)</span>
+            </button>
+          </div>
+
+          <!-- Scan Execution Button -->
+          <button id="uploadBtn" disabled class="w-full py-4 px-6 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-extrabold text-sm rounded-2xl shadow-xl shadow-amber-500/20 disabled:opacity-40 disabled:cursor-not-allowed transition transform hover:scale-[1.01] flex items-center justify-center gap-2">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span id="uploadBtnText">Analyze Uploaded Fridge Photo</span>
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- STEP 2: INGREDIENT CONFIRMATION GRID -->
+    <!-- ========================================== -->
+    <section id="step2Section" class="hidden glass-panel rounded-3xl p-6 md:p-8 space-y-6 glow-emerald">
+      
+      <!-- Polite Detection Notification Banner -->
+      <div id="detectionBanner" class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-200 text-xs flex items-start gap-3">
+        <span class="text-xl">✨</span>
+        <div>
+          <p class="font-bold text-emerald-300 flex items-center gap-1.5">
+            <span>Namaste Chef! Ingredients scanned successfully.</span>
+            <span class="devanagari font-normal opacity-80">(सामग्री की पुष्टि करें)</span>
+          </p>
+          <p class="text-slate-300 mt-0.5 leading-relaxed">
+            Please verify the items below. If your camera missed anything stored in steel dabbas or pantry shelves, use the Quick-Add pills below!
+          </p>
+        </div>
+      </div>
+
+      <!-- Confirmation Header -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-800/80 gap-3">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h2 class="text-lg md:text-xl font-bold text-white">Step 2: Ingredient Confirmation Grid</h2>
+            <span id="detectedCountBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              8 items confirmed
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">
+            Tap the ✕ on any unwanted items, or add fresh staples from your kitchen.
+          </p>
+        </div>
+
+        <!-- Find Recipes Action Button -->
+        <button id="findRecipesBtn" class="py-3 px-6 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-extrabold text-xs md:text-sm rounded-xl shadow-lg shadow-emerald-500/25 transition transform hover:scale-[1.02] flex items-center justify-center gap-2">
+          <span>Find Matching Indian Recipes</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Ingredient Category Filter Tabs -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+        <span class="text-slate-400 font-medium mr-1 text-[11px]">Filter:</span>
+        <button class="cat-filter-btn px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold" data-cat="all">All Items</button>
+        <button class="cat-filter-btn px-3 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300" data-cat="Vegetables">Vegetables</button>
+        <button class="cat-filter-btn px-3 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300" data-cat="Dairy">Dairy</button>
+        <button class="cat-filter-btn px-3 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300" data-cat="Produce">Produce & Herbs</button>
+        <button class="cat-filter-btn px-3 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300" data-cat="Staples">Pantry Basics</button>
+      </div>
+
+      <!-- THE INTERACTIVE INGREDIENT CONFIRMATION CARDS -->
+      <div id="ingredientGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5">
+        <!-- Dynamically injected cards -->
+      </div>
+
+      <!-- QUICK ADD BAR & POPULAR PANTRY PILLS -->
+      <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-3">
+        <div class="flex items-center gap-2">
+          <div class="relative flex-1">
+            <i data-lucide="plus-circle" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input type="text" id="manualInput" placeholder="Add custom item (e.g. Aloo, Atta, Besan, Eggs, Kasoori Methi)..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl pl-10 pr-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition" />
+          </div>
+          <button id="addManualBtn" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-bold rounded-xl border border-slate-700 transition">
+            + Add Item
+          </button>
+        </div>
+
+        <!-- 1-Click Quick Add Chips -->
+        <div class="space-y-1.5 pt-1">
+          <span class="text-[11px] text-slate-400 font-semibold block">Quick Add Everyday Indian Staples:</span>
+          <div id="quickAddPillsContainer" class="flex flex-wrap items-center gap-1.5">
+            <!-- Populated via /api/popular-ingredients -->
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- STEP 3: MATCHED RECIPES & GROCERY HUB -->
+    <!-- ========================================== -->
+    <section id="step3Section" class="hidden space-y-8">
+      
+      <!-- DIETARY PREFERENCE SELECTOR (Good-Mannered Indian Hospitality) -->
+      <div class="glass-panel rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-slate-800">
+        <div>
+          <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <span>Dietary Preference & Lifestyle</span>
+            <span class="devanagari text-amber-400 font-normal">| खान-पान की पसंद</span>
+          </h3>
+          <p class="text-[11px] text-slate-400 mt-0.5">We respect all traditional dietary preferences with utmost care.</p>
+        </div>
+
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button class="diet-btn px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs shadow-md transition" data-diet="all">
+            🍽️ All Dishes
+          </button>
+          <button class="diet-btn px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-emerald-300 font-semibold text-xs border border-slate-700 transition" data-diet="veg">
+            🥬 Pure Veg (शाकाहारी)
+          </button>
+          <button class="diet-btn px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-amber-300 font-semibold text-xs border border-slate-700 transition" data-diet="jain">
+            🌿 Jain / Satvik (No Onion/Garlic)
+          </button>
+          <button class="diet-btn px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-rose-300 font-semibold text-xs border border-slate-700 transition" data-diet="non-veg">
+            🍗 Non-Veg & Eggs
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN SPLIT: RECIPES (8 COLS) + SHOPPING LIST (4 COLS) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- RECIPES COLUMN -->
+        <div class="lg:col-span-8 space-y-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <span>Matching Desi Recipes</span>
+                <span id="recipeCountBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">0 Found</span>
+              </h2>
+              <p class="text-xs text-slate-400 mt-0.5">Ranked by highest ingredient availability in your kitchen.</p>
+            </div>
+          </div>
+
+          <!-- Recipe Cards List -->
+          <div id="recipeCards" class="space-y-4">
+            <!-- Dynamically populated recipe cards -->
+          </div>
+        </div>
+
+        <!-- SMART SHOPPING LIST COLUMN (Sticky) -->
+        <div class="lg:col-span-4 space-y-4">
+          <div class="glass-panel rounded-3xl p-6 border border-slate-800 shadow-2xl sticky top-6 space-y-4">
+            
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-lg">
+                  🛒
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-white">Missing Items Grocery Hub</h3>
+                  <span class="text-[10px] text-amber-300 devanagari">सामान की सूची</span>
+                </div>
+              </div>
+              <button id="copyListBtn" class="text-[11px] text-amber-400 hover:text-amber-300 font-bold transition flex items-center gap-1">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+              Items needed for partial recipes. <span class="text-emerald-400">Masala Dabba staples</span> (Haldi, Namak, Jeera, Oil) are automatically excluded!
+            </p>
+
+            <!-- Shopping List Checklist -->
+            <div id="shoppingListContainer" class="space-y-2 max-h-80 overflow-y-auto pr-1">
+              <!-- Dynamically populated shopping items -->
+            </div>
+
+            <!-- Polite Export Actions: WhatsApp Share & Quick Blinkit/Zepto Links -->
+            <div class="pt-3 border-t border-slate-800/80 space-y-2.5">
+              <!-- WhatsApp Share Button -->
+              <button id="whatsappShareBtn" class="w-full py-2.5 px-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
+                <span>💬 Send Polite WhatsApp Grocery List</span>
+              </button>
+
+              <!-- Quick 10-Minute Delivery Links (Blinkit / Zepto / Swiggy) -->
+              <div class="grid grid-cols-2 gap-2 text-center text-[10px]">
+                <a id="blinkitBtn" href="https://blinkit.com" target="_blank" class="p-2 rounded-lg bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 font-semibold transition">
+                  ⚡ Order on Blinkit
+                </a>
+                <a id="zeptoBtn" href="https://www.zeptonow.com" target="_blank" class="p-2 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 font-semibold transition">
+                  🚀 Order on Zepto
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 1: COOK ALONG INTERACTIVE ASSISTANT -->
+  <!-- ========================================== -->
+  <div id="cookAlongModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-2xl rounded-3xl border border-amber-500/30 p-6 md:p-8 space-y-6 shadow-2xl relative">
+      
+      <!-- Close button -->
+      <button id="closeCookModalBtn" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg p-1">
+        ✕
+      </button>
+
+      <!-- Modal Header -->
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            Cook Along Mode
+          </span>
+          <span id="cookDifficultyBadge" class="text-xs text-slate-400">Easy • 20 mins</span>
+        </div>
+        <h2 id="cookRecipeTitle" class="text-2xl font-extrabold text-white">Amritsari Paneer Bhurji</h2>
+        <p id="cookRecipeHindi" class="text-xs text-amber-400 font-medium devanagari">अमृतसरी पनीर भुर्जी</p>
+      </div>
+
+      <!-- Step Progress Bar -->
+      <div>
+        <div class="flex items-center justify-between text-xs text-slate-400 mb-1.5 font-semibold">
+          <span id="cookStepCounter">Step 1 of 4</span>
+          <span id="cookStepPercent">25% completed</span>
+        </div>
+        <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+          <div id="cookProgressBar" class="h-full bg-gradient-to-r from-amber-500 to-emerald-400 w-1/4 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Current Step Card (High Contrast for Cooking) -->
+      <div class="bg-slate-950/80 rounded-2xl p-6 border border-slate-800 space-y-4">
+        <div class="flex items-start justify-between gap-3">
+          <span class="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 font-bold text-sm flex items-center justify-center shrink-0">
+            👨‍🍳
+          </span>
+          <p id="cookStepInstruction" class="text-base md:text-lg text-slate-100 font-medium leading-relaxed flex-1">
+            Heat oil or butter in a kadai. Saute chopped onions, green chillies, and ginger until translucent.
+          </p>
+        </div>
+
+        <!-- Integrated Step Timer -->
+        <div class="flex items-center justify-between pt-3 border-t border-slate-800/80">
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-semibold text-slate-400">Step Timer:</span>
+            <span id="timerDisplay" class="font-mono text-base font-bold text-amber-400 bg-slate-900 px-3 py-1 rounded-lg border border-slate-700">03:00</span>
+            <button id="timerToggleBtn" class="px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition">
+              Start
+            </button>
+            <button id="timerResetBtn" class="text-xs text-slate-500 hover:text-slate-300">Reset</button>
+          </div>
+
+          <!-- Text-to-Speech Voice button -->
+          <button id="speakStepBtn" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition" title="Read Step Aloud">
+            <i data-lucide="volume-2" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>Speak Step</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Footer Step Controls -->
+      <div class="flex items-center justify-between pt-2">
+        <button id="prevStepBtn" class="py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-slate-700 transition">
+          ← Previous Step
+        </button>
+        <button id="nextStepBtn" class="py-2.5 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+          <span>Next Step</span> →
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 2: 7-SPICE BRASS MASALA DABBA MODAL  -->
+  <!-- ========================================== -->
+  <div id="masalaDabbaModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-xl rounded-3xl border border-amber-500/30 p-6 md:p-8 space-y-6 shadow-2xl relative">
+      <button id="closeMasalaModalBtn" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg p-1">
+        ✕
+      </button>
+
+      <div class="text-center space-y-1">
+        <span class="text-3xl">🫙</span>
+        <h2 class="text-xl font-bold text-white">The Traditional Indian Masala Dabba</h2>
+        <p class="text-xs text-amber-400 devanagari">मसाला दानी — हर भारतीय रसोई की शान</p>
+      </div>
+
+      <p class="text-xs text-slate-300 text-center leading-relaxed max-w-md mx-auto">
+        RasoiAI is built on authentic Indian culinary manners. We assume every kitchen has these 7 staple spices stocked, so we <strong>never</strong> clutter your grocery checklist with basic spices.
+      </p>
+
+      <!-- 7 Katoris Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div class="p-3 rounded-2xl bg-slate-950/70 border border-amber-500/30 text-center space-y-1">
+          <div class="w-10 h-10 mx-auto rounded-full bg-yellow-500/20 border border-yellow-500/40 flex items-center justify-center text-lg">✨</div>
+          <p class="text-xs font-bold text-white">Haldi (Turmeric)</p>
+          <p class="text-[10px] text-amber-400/80">हल्दी • Antibacterial</p>
+        </div>
+        <div class="p-3 rounded-2xl bg-slate-950/70 border border-amber-500/30 text-center space-y-1">
+          <div class="w-10 h-10 mx-auto rounded-full bg-amber-700/20 border border-amber-700/40 flex items-center justify-center text-lg">🌾</div>
+          <p class="text-xs font-bold text-white">Jeera (Cumin)</p>
+          <p class="text-[10px] text-amber-400/80">जीरा • Fragrant tadka</p>
+        </div>
+        <div class="p-3 rounded-2xl bg-slate-950/70 border border-amber-500/30 text-center space-y-1">
+          <div class="w-10 h-10 mx-auto rounded-full bg-red-600/20 border border-red-600/40 flex items-center justify-center text-lg">🌶️</div>
+          <p class="text-xs font-bold text-white">Lal Mirch</p>
+          <p class="text-[10px] text-amber-400/80">लाल मिर्च • Heat & color</p>
+        </div>
+        <div class="p-3 rounded-2xl bg-slate-950/70 border border-amber-500/30 text-center space-y-1">
+          <div class="w-10 h-10 mx-auto rounded-full bg-zinc-700/20 border border-zinc-700/40 flex items-center justify-center text-lg">⚫</div>
+          <p class="text-xs font-bold text-white">Rai (Mustard)</p>
+          <p class="text-[10px] text-amber-400/80">राई • Pungent crackle</p>
+        </div>
+        <div class="p-3 rounded-2xl bg-slate-950/70 border border-amber-500/30 text-center space-y-1">
+          <div class="w-10 h-10 mx-auto rounded-full bg-emerald-600/20 border border-emerald-600/40 flex items-center justify-center text-lg">🌿</div>
+          <p class="text-xs font-bold text-white">Dhaniya Powder</p>
+          <p class="text-[10px] text-amber-400/80">धनिया पाउडर • Body & aroma</p>
+        </div>
+        <div class="p-3 rounded-2xl bg-slate-950/70 border border-amber-500/30 text-center space-y-1">
+          <div class="w-10 h-10 mx-auto rounded-full bg-orange-700/20 border border-orange-700/40 flex items-center justify-center text-lg">👑</div>
+          <p class="text-xs font-bold text-white">Garam Masala</p>
+          <p class="text-[10px] text-amber-400/80">गरम मसाला • Royal finish</p>
+        </div>
+      </div>
+
+      <div class="text-center pt-2">
+        <button id="gotItMasalaBtn" class="py-2.5 px-6 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs transition hover:scale-105">
+          Shukriya! Understood 🙏
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 3: LIVE CAMERA WEBCAM SHUTTER        -->
+  <!-- ========================================== -->
+  <div id="cameraModal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-lg rounded-3xl border border-slate-700 p-6 space-y-4 shadow-2xl relative">
+      <button id="closeCameraModalBtn" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg p-1">
+        ✕
+      </button>
+
+      <div class="space-y-1">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="camera" class="w-5 h-5 text-amber-400"></i>
+          <span>Snap Fridge with Webcam</span>
+        </h3>
+        <p class="text-xs text-slate-400">Point your camera towards your fridge or vegetable shelf.</p>
+      </div>
+
+      <div class="relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 aspect-video flex items-center justify-center">
+        <video id="webcamVideo" autoplay playsinline class="w-full h-full object-cover"></video>
+        <canvas id="webcamCanvas" class="hidden"></canvas>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button id="cancelCameraBtn" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold">
+          Cancel
+        </button>
+        <button id="captureShutterBtn" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-amber-500/25">
+          <span>📸 Capture Photo</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-slate-900 border border-amber-500/40 text-amber-300 px-4 py-3 rounded-2xl shadow-2xl text-xs font-semibold flex items-center gap-2.5 transition transform translate-y-2">
+    <span id="toastIcon">✨</span>
+    <span id="toastMessage">Action completed!</span>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC & ANIMATIONS              -->
+  <!-- ========================================== -->
+  <script>
+    // -------------------------------------------------------------
+    // 1. Audio Synthesizer (Zero External Dependencies)
+    // -------------------------------------------------------------
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        if (type === 'chime') {
+          // Pentatonic chime
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+            gain.gain.setValueAtTime(0.08, now + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.35);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + idx * 0.08);
+            osc.stop(now + idx * 0.08 + 0.4);
+          });
+        } else if (type === 'pop') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.frequency.setValueAtTime(400, now);
+          osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.1);
+        } else if (type === 'bell') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.frequency.setValueAtTime(880, now);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 1.3);
+        }
+      } catch (e) {
+        console.warn("Audio error:", e);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 2. Subtle Floating Background Spice Canvas
+    // -------------------------------------------------------------
+    const canvas = document.getElementById('spiceCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const SPICE_COLORS = ['#f59e0b', '#d97706', '#10b981', '#fbbf24', '#b45309'];
+    for (let i = 0; i < 35; i++) {
+      particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        radius: Math.random() * 2.5 + 1,
+        color: SPICE_COLORS[Math.floor(Math.random() * SPICE_COLORS.length)],
+        speedY: -(Math.random() * 0.4 + 0.15),
+        speedX: (Math.random() - 0.5) * 0.3,
+        opacity: Math.random() * 0.5 + 0.2,
+      });
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.y += p.speedY;
+        p.x += p.speedX;
+        if (p.y < -10) {
+          p.y = canvas.height + 10;
+          p.x = Math.random() * canvas.width;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.opacity;
+        ctx.fill();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // -------------------------------------------------------------
+    // 3. Indian Hospitality Time-of-Day Greeting
+    // -------------------------------------------------------------
+    function updateGreeting() {
+      const hour = new Date().getHours();
+      const banner = document.getElementById('greetingText');
+      const icon = document.getElementById('timeIcon');
+      if (hour < 12) {
+        icon.innerText = '🌅';
+        banner.innerHTML = 'Shubh Prabhat, Chef! Ready to cook a wholesome breakfast? 🙏';
+      } else if (hour < 17) {
+        icon.innerText = '☀️';
+        banner.innerHTML = 'Shubh Dopahar, Chef! Let’s prepare a delicious, nutritious lunch 🙏';
+      } else {
+        icon.innerText = '🌙';
+        banner.innerHTML = 'Shubh Sandhya, Chef! Welcome home, let’s make tonight’s dinner special 🙏';
+      }
+    }
+    updateGreeting();
+
+    // -------------------------------------------------------------
+    // 4. State Management
+    // -------------------------------------------------------------
+    let confirmedIngredients = new Map(); // key: canonical name -> object
+    let selectedFile = null;
+    let currentDiet = 'all';
+    let currentMatchData = null;
+    let activeRecipeForCooking = null;
+    let currentCookingStep = 0;
+    let cookingTimerInterval = null;
+    let cookingTimerRemainingSeconds = 180;
+
+    // DOM References
+    const fileInput = document.getElementById('fileInput');
+    const dropzone = document.getElementById('dropzone');
+    const dropzoneContent = document.getElementById('dropzoneContent');
+    const imagePreview = document.getElementById('imagePreview');
+    const scannerLaser = document.getElementById('scannerLaser');
+    const scannerStatusText = document.getElementById('scannerStatusText');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const uploadBtnText = document.getElementById('uploadBtnText');
+    const sampleBtn = document.getElementById('sampleBtn');
+    const resetImageBtn = document.getElementById('resetImageBtn');
+
+    const step1Section = document.getElementById('step1Section');
+    const step2Section = document.getElementById('step2Section');
+    const step3Section = document.getElementById('step3Section');
+
+    const stepTab1 = document.getElementById('stepTab1');
+    const stepTab2 = document.getElementById('stepTab2');
+    const stepTab3 = document.getElementById('stepTab3');
+
+    const ingredientGrid = document.getElementById('ingredientGrid');
+    const detectedCountBadge = document.getElementById('detectedCountBadge');
+    const manualInput = document.getElementById('manualInput');
+    const addManualBtn = document.getElementById('addManualBtn');
+    const quickAddPillsContainer = document.getElementById('quickAddPillsContainer');
+    const findRecipesBtn = document.getElementById('findRecipesBtn');
+
+    const recipeCards = document.getElementById('recipeCards');
+    const recipeCountBadge = document.getElementById('recipeCountBadge');
+    const shoppingListContainer = document.getElementById('shoppingListContainer');
+    const copyListBtn = document.getElementById('copyListBtn');
+    const whatsappShareBtn = document.getElementById('whatsappShareBtn');
+
+    // Modals
+    const cookAlongModal = document.getElementById('cookAlongModal');
+    const closeCookModalBtn = document.getElementById('closeCookModalBtn');
+    const cookRecipeTitle = document.getElementById('cookRecipeTitle');
+    const cookRecipeHindi = document.getElementById('cookRecipeHindi');
+    const cookDifficultyBadge = document.getElementById('cookDifficultyBadge');
+    const cookStepCounter = document.getElementById('cookStepCounter');
+    const cookStepPercent = document.getElementById('cookStepPercent');
+    const cookProgressBar = document.getElementById('cookProgressBar');
+    const cookStepInstruction = document.getElementById('cookStepInstruction');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const timerToggleBtn = document.getElementById('timerToggleBtn');
+    const timerResetBtn = document.getElementById('timerResetBtn');
+    const speakStepBtn = document.getElementById('speakStepBtn');
+    const prevStepBtn = document.getElementById('prevStepBtn');
+    const nextStepBtn = document.getElementById('nextStepBtn');
+
+    const masalaDabbaModal = document.getElementById('masalaDabbaModal');
+    const openMasalaDabbaBtn = document.getElementById('openMasalaDabbaBtn');
+    const closeMasalaModalBtn = document.getElementById('closeMasalaModalBtn');
+    const gotItMasalaBtn = document.getElementById('gotItMasalaBtn');
+
+    const cameraModal = document.getElementById('cameraModal');
+    const openCameraBtn = document.getElementById('openCameraBtn');
+    const closeCameraModalBtn = document.getElementById('closeCameraModalBtn');
+    const cancelCameraBtn = document.getElementById('cancelCameraBtn');
+    const captureShutterBtn = document.getElementById('captureShutterBtn');
+    const webcamVideo = document.getElementById('webcamVideo');
+    const webcamCanvas = document.getElementById('webcamCanvas');
+    let webcamStream = null;
+
+    // Toast helper
+    function showToast(message, icon = '✨') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').innerText = message;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('hidden');
+      toast.classList.remove('translate-y-2');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.add('translate-y-2');
+      }, 3000);
+    }
+
+    // Sound toggle
+    document.getElementById('soundToggleBtn').addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      document.getElementById('soundToggleBtn').innerHTML = soundEnabled
+        ? `<i data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i>`
+        : `<i data-lucide="volume-x" class="w-4 h-4 text-rose-400"></i>`;
+      lucide.createIcons();
+      showToast(soundEnabled ? 'Culinary Chimes Enabled 🔔' : 'Muted 🔇');
+    });
+
+    // -------------------------------------------------------------
+    // 5. Fetch Quick-Add Popular Staples from Backend
+    // -------------------------------------------------------------
+    async function loadPopularIngredients() {
+      try {
+        const res = await fetch('/api/popular-ingredients');
+        const data = await res.json();
+        if (data.popular_ingredients) {
+          quickAddPillsContainer.innerHTML = '';
+          data.popular_ingredients.slice(0, 14).forEach(item => {
+            const btn = document.createElement('button');
+            btn.className = 'pill-tag px-2.5 py-1 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-[11px] text-slate-300 border border-slate-700 transition flex items-center gap-1 hover:scale-105';
+            btn.innerHTML = `<span class="text-amber-400 font-bold">+</span> <span>${item.name}</span> <span class="text-[10px] text-slate-500 devanagari">(${item.hindi_name.split('/')[0].trim()})</span>`;
+            btn.addEventListener('click', () => {
+              playSound('pop');
+              confirmedIngredients.set(item.name.toLowerCase(), {
+                id: 'pop_' + Math.random().toString(36).substring(7),
+                name: item.name,
+                hindi_name: item.hindi_name,
+                category: item.category,
+                confidence: 1.0,
+              });
+              renderGrid();
+              showToast(`Added ${item.name}!`);
+            });
+            quickAddPillsContainer.appendChild(btn);
+          });
+        }
+      } catch (e) {
+        console.warn("Could not load popular ingredients:", e);
+      }
+    }
+    loadPopularIngredients();
+
+    // -------------------------------------------------------------
+    // 6. Step 1: Dropzone, Image Pick, and Live Webcam
+    // -------------------------------------------------------------
+    dropzone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleFileSelection(e.target.files[0]);
+      }
+    });
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('border-amber-400', 'bg-amber-500/10');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('border-amber-400', 'bg-amber-500/10');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('border-amber-400', 'bg-amber-500/10');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleFileSelection(e.dataTransfer.files[0]);
+      }
+    });
+
+    function handleFileSelection(file) {
+      selectedFile = file;
+      uploadBtn.disabled = false;
+      resetImageBtn.classList.remove('hidden');
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        imagePreview.src = ev.target.result;
+        imagePreview.classList.remove('hidden');
+        dropzoneContent.classList.add('hidden');
+        playSound('pop');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    resetImageBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectedFile = null;
+      fileInput.value = '';
+      imagePreview.src = '';
+      imagePreview.classList.add('hidden');
+      dropzoneContent.classList.remove('hidden');
+      uploadBtn.disabled = true;
+      resetImageBtn.classList.add('hidden');
+    });
+
+    // Live Webcam Implementation
+    openCameraBtn.addEventListener('click', async () => {
+      cameraModal.classList.remove('hidden');
+      try {
+        webcamStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment' }
+        });
+        webcamVideo.srcObject = webcamStream;
+      } catch (err) {
+        alert("Camera access denied or unavailable: " + err.message);
+        cameraModal.classList.add('hidden');
+      }
+    });
+
+    function stopWebcam() {
+      if (webcamStream) {
+        webcamStream.getTracks().forEach(track => track.stop());
+        webcamStream = null;
+      }
+      cameraModal.classList.add('hidden');
+    }
+
+    closeCameraModalBtn.addEventListener('click', stopWebcam);
+    cancelCameraBtn.addEventListener('click', stopWebcam);
+
+    captureShutterBtn.addEventListener('click', () => {
+      if (!webcamVideo.videoWidth) return;
+      webcamCanvas.width = webcamVideo.videoWidth;
+      webcamCanvas.height = webcamVideo.videoHeight;
+      const wCtx = webcamCanvas.getContext('2d');
+      wCtx.drawImage(webcamVideo, 0, 0);
+
+      webcamCanvas.toBlob((blob) => {
+        const file = new File([blob], "fridge_capture.jpg", { type: "image/jpeg" });
+        handleFileSelection(file);
+        stopWebcam();
+        showToast("Photo captured! Click Analyze to scan.");
+      }, 'image/jpeg', 0.9);
+    });
+
+    // -------------------------------------------------------------
+    // 7. Scanning Execution with Holographic Laser Overlay
+    // -------------------------------------------------------------
+    uploadBtn.addEventListener('click', async () => {
+      if (!selectedFile) return;
+      uploadBtn.disabled = true;
+      uploadBtnText.innerText = "Scanning with Gemini Vision...";
+      scannerLaser.classList.remove('hidden');
+      playSound('chime');
+
+      // Status messages animation
+      const statuses = [
+        "Initializing Gemini 3.8 Flash Vision...",
+        "Detecting sabzis and fresh produce...",
+        "Checking dairy shelf (Paneer, Dahi, Milk)...",
+        "Recognizing spices, chillies and herbs...",
+        "Mapping to Indian culinary corpus...",
+      ];
+      let statusIdx = 0;
+      const statusInterval = setInterval(() => {
+        statusIdx = (statusIdx + 1) % statuses.length;
+        scannerStatusText.innerText = statuses[statusIdx];
+      }, 900);
+
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      try {
+        const res = await fetch('/api/detect-ingredients', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await res.json();
+        clearInterval(statusInterval);
+        scannerLaser.classList.add('hidden');
+        populateConfirmationGrid(data.detected_ingredients, data.is_mock);
+        playSound('chime');
+        showToast(`Detected ${data.detected_count} ingredients!`);
+      } catch (err) {
+        clearInterval(statusInterval);
+        scannerLaser.classList.add('hidden');
+        alert("Scan error: " + err.message);
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtnText.innerText = "Analyze Uploaded Fridge Photo";
+      }
+    });
+
+    sampleBtn.addEventListener('click', async () => {
+      sampleBtn.disabled = true;
+      sampleBtn.innerHTML = `<span>Loading Sample Fridge...</span>`;
+      playSound('pop');
+
+      try {
+        const res = await fetch('/api/mock-detect', { method: 'POST' });
+        const data = await res.json();
+        populateConfirmationGrid(data.detected_ingredients, true);
+        playSound('chime');
+        showToast("Loaded classic Indian sample fridge! ✨");
+      } catch (err) {
+        alert("Sample loading error: " + err.message);
+      } finally {
+        sampleBtn.disabled = false;
+        sampleBtn.innerHTML = `<span>⚡ Load Desi Sample Fridge (Instant)</span>`;
+      }
+    });
+
+    // -------------------------------------------------------------
+    // 8. Step 2: Confirmation Grid Population
+    // -------------------------------------------------------------
+    function populateConfirmationGrid(items, isMock = false) {
+      confirmedIngredients.clear();
+      items.forEach(item => {
+        confirmedIngredients.set(item.name.toLowerCase(), item);
+      });
+
+      renderGrid();
+
+      // Show Step 2, update Stepper
+      step2Section.classList.remove('hidden');
+      stepTab2.classList.remove('border-slate-800', 'bg-slate-900/40', 'text-slate-400');
+      stepTab2.classList.add('border-emerald-500/50', 'bg-emerald-500/10', 'text-emerald-300', 'shadow-lg');
+      stepTab2.querySelector('span').classList.remove('bg-slate-800', 'text-slate-400');
+      stepTab2.querySelector('span').classList.add('bg-emerald-500', 'text-slate-950');
+
+      step2Section.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function renderGrid(filterCategory = 'all') {
+      ingredientGrid.innerHTML = '';
+      detectedCountBadge.innerText = `${confirmedIngredients.size} items confirmed`;
+
+      confirmedIngredients.forEach((item, key) => {
+        if (filterCategory !== 'all' && item.category !== filterCategory) {
+          return;
+        }
+
+        const card = document.createElement('div');
+        card.className = "glow-card glass-card p-3.5 rounded-2xl flex flex-col justify-between group relative border border-slate-800/80";
+
+        const categoryColors = {
+          'Dairy': 'text-cyan-300 bg-cyan-500/15 border-cyan-500/30',
+          'Vegetables': 'text-emerald-300 bg-emerald-500/15 border-emerald-500/30',
+          'Produce': 'text-amber-300 bg-amber-500/15 border-amber-500/30',
+          'Herbs': 'text-lime-300 bg-lime-500/15 border-lime-500/30',
+          'Protein': 'text-rose-300 bg-rose-500/15 border-rose-500/30',
+        };
+        const badgeStyle = categoryColors[item.category] || 'text-slate-300 bg-slate-800 border-slate-700';
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between">
+            <span class="text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md border ${badgeStyle}">
+              ${item.category || 'Pantry'}
+            </span>
+            <button class="remove-item-btn w-6 h-6 rounded-lg bg-slate-800/50 hover:bg-rose-500/20 hover:text-rose-400 text-slate-500 text-xs flex items-center justify-center transition" title="Remove ingredient">
+              ✕
+            </button>
+          </div>
+          <div class="mt-3">
+            <p class="text-xs md:text-sm font-bold text-white capitalize flex items-center gap-1.5">
+              <span>${item.name}</span>
+            </p>
+            <p class="text-[11px] text-amber-400/90 font-medium devanagari mt-0.5">
+              ${item.hindi_name || ''}
+            </p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] text-slate-500 font-mono">
+            <span>Confidence</span>
+            <span class="text-emerald-400 font-semibold">${Math.round((item.confidence || 0.95) * 100)}%</span>
+          </div>
+        `;
+
+        card.querySelector('.remove-item-btn').addEventListener('click', () => {
+          playSound('pop');
+          confirmedIngredients.delete(key);
+          renderGrid(filterCategory);
+          showToast(`Removed ${item.name}`);
+        });
+
+        ingredientGrid.appendChild(card);
+      });
+    }
+
+    // Category Filter Buttons in Step 2
+    document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.cat-filter-btn').forEach(b => {
+          b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold');
+          b.classList.add('bg-slate-800/80', 'text-slate-300');
+        });
+        btn.classList.remove('bg-slate-800/80', 'text-slate-300');
+        btn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
+        renderGrid(btn.dataset.cat);
+      });
+    });
+
+    // Manual Custom Item Addition
+    addManualBtn.addEventListener('click', addManualItem);
+    manualInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addManualItem();
+    });
+
+    function addManualItem() {
+      const val = manualInput.value.trim().toLowerCase();
+      if (!val) return;
+      playSound('pop');
+      confirmedIngredients.set(val, {
+        id: 'man_' + Math.random().toString(36).substring(7),
+        name: val,
+        hindi_name: "",
+        category: "Staples",
+        confidence: 1.0,
+      });
+      manualInput.value = '';
+      renderGrid();
+      showToast(`Added ${val} to your kitchen!`);
+    }
+
+    // -------------------------------------------------------------
+    // 9. Step 3: Match Recipes from Corpus
+    // -------------------------------------------------------------
+    findRecipesBtn.addEventListener('click', async () => {
+      if (confirmedIngredients.size === 0) {
+        alert("Please confirm at least 1 ingredient from your kitchen!");
+        return;
+      }
+
+      findRecipesBtn.disabled = true;
+      findRecipesBtn.innerHTML = `<span>Matching Authentic Recipes...</span>`;
+      playSound('chime');
+
+      try {
+        const itemsList = Array.from(confirmedIngredients.keys());
+        const res = await fetch('/api/match-recipes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            confirmed_ingredients: itemsList,
+            diet_preference: currentDiet,
+          }),
+        });
+        const data = await res.json();
+        currentMatchData = data;
+        renderResults(data);
+
+        // Celebratory Confetti if 100% Ready to Cook dish is unlocked!
+        if (data.exact_matches && data.exact_matches.length > 0) {
+          triggerCelebrationConfetti();
+        }
+
+      } catch (err) {
+        alert("Matching error: " + err.message);
+      } finally {
+        findRecipesBtn.disabled = false;
+        findRecipesBtn.innerHTML = `<span>Find Matching Indian Recipes</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+        lucide.createIcons();
+      }
+    });
+
+    function triggerCelebrationConfetti() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#f59e0b', '#10b981', '#fbbf24', '#ffffff']
+      });
+      playSound('chime');
+    }
+
+    // Dietary Filter Handlers
+    document.querySelectorAll('.diet-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        document.querySelectorAll('.diet-btn').forEach(b => {
+          b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold');
+          b.classList.add('bg-slate-800/80', 'text-slate-300');
+        });
+        btn.classList.remove('bg-slate-800/80', 'text-slate-300');
+        btn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
+        
+        currentDiet = btn.dataset.diet;
+        playSound('pop');
+        
+        if (confirmedIngredients.size > 0) {
+          // Re-fetch with dietary filter
+          findRecipesBtn.click();
+        }
+      });
+    });
+
+    // -------------------------------------------------------------
+    // 10. Render Results: Recipe Cards & Grocery Hub
+    // -------------------------------------------------------------
+    function renderResults(data) {
+      step3Section.classList.remove('hidden');
+
+      // Update Step 3 in Stepper
+      stepTab3.classList.remove('border-slate-800', 'bg-slate-900/40', 'text-slate-400');
+      stepTab3.classList.add('border-amber-500/50', 'bg-amber-500/10', 'text-amber-300', 'shadow-lg');
+      stepTab3.querySelector('span').classList.remove('bg-slate-800', 'text-slate-400');
+      stepTab3.querySelector('span').classList.add('bg-amber-500', 'text-slate-950');
+
+      recipeCards.innerHTML = '';
+      const totalRecipes = (data.exact_matches?.length || 0) + (data.partial_matches?.length || 0);
+      recipeCountBadge.innerText = `${totalRecipes} Dishes Ready`;
+
+      const allMatches = [...(data.exact_matches || []), ...(data.partial_matches || [])];
+
+      if (allMatches.length === 0) {
+        recipeCards.innerHTML = `
+          <div class="glass-card p-8 rounded-3xl text-center space-y-2 border border-slate-800">
+            <span class="text-3xl">🍲</span>
+            <p class="text-sm font-bold text-white">No direct recipe matches found with current items.</p>
+            <p class="text-xs text-slate-400">Try quick-adding common basics like onions, tomatoes, or potatoes above.</p>
+          </div>
+        `;
+      } else {
+        allMatches.forEach(r => {
+          const isExact = r.match_percentage === 100;
+          const card = document.createElement('div');
+          card.className = `glass-card p-5 md:p-6 rounded-3xl border transition space-y-4 glow-card ${
+            isExact ? 'border-emerald-500/40 bg-emerald-950/10' : 'border-slate-800'
+          }`;
+
+          card.innerHTML = `
+            <!-- Card Header -->
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full ${
+                    isExact ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                  }">
+                    ${isExact ? '🟢 Ready to Cook (100%)' : `🟡 ${r.match_status} (${r.match_percentage}%)`}
+                  </span>
+                  ${r.tags.map(t => `<span class="text-[10px] text-slate-400 capitalize">#${t}</span>`).slice(0, 2).join('')}
+                </div>
+                <h3 class="text-base md:text-lg font-bold text-white mt-1.5 flex items-center gap-2">
+                  <span>${r.title}</span>
+                </h3>
+                <p class="text-xs text-amber-400 font-medium devanagari mt-0.5">${r.hindi_title || ''}</p>
+              </div>
+
+              <div class="text-right text-xs text-slate-400 shrink-0">
+                <span class="font-bold text-slate-200">⏱️ ${r.prep_time_minutes} mins</span>
+                <p class="text-[11px] text-slate-500 mt-0.5">${r.difficulty} • ${r.servings} Servings</p>
+              </div>
+            </div>
+
+            <!-- Ingredients Breakdown (Available vs Missing) -->
+            <div class="space-y-2 text-xs pt-1">
+              <div class="flex flex-wrap gap-1.5 items-center">
+                <span class="text-[11px] text-slate-400 font-medium">In Kitchen:</span>
+                ${r.available_ingredients.map(ing => `<span class="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 text-[11px]">${ing}</span>`).join('')}
+              </div>
+
+              ${r.missing_ingredients.length > 0 ? `
+              <div class="flex flex-wrap gap-1.5 items-center">
+                <span class="text-[11px] text-amber-400 font-medium">Missing:</span>
+                ${r.missing_ingredients.map(ing => `<span class="px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[11px]">⚠️ ${ing}</span>`).join('')}
+              </div>` : ''}
+            </div>
+
+            <!-- Recipe Actions: Accordion & Cook Along & YouTube -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-t border-slate-800/80 pt-3 gap-3">
+              <button class="cook-along-btn px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-md transition hover:scale-105">
+                <span>👨‍🍳 Start Cooking Mode</span>
+              </button>
+
+              <div class="flex items-center gap-2">
+                <details class="text-xs group">
+                  <summary class="cursor-pointer text-slate-400 hover:text-white font-semibold py-1">View Quick Steps ▾</summary>
+                  <ol class="mt-2 space-y-1 text-slate-300 list-decimal list-inside text-xs leading-relaxed max-w-md">
+                    ${r.instructions.map(step => `<li>${step}</li>`).join('')}
+                  </ol>
+                </details>
+
+                ${r.youtube_url ? `
+                  <a href="${r.youtube_url}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-rose-600/15 hover:bg-rose-600/25 text-rose-300 border border-rose-500/30 text-xs font-semibold flex items-center gap-1.5 transition">
+                    <svg class="w-3.5 h-3.5 fill-current text-rose-400" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                    <span>Tutorial</span>
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+          `;
+
+          // Hook Cook Along Launcher
+          card.querySelector('.cook-along-btn').addEventListener('click', () => {
+            launchCookAlong(r);
+          });
+
+          recipeCards.appendChild(card);
+        });
+      }
+
+      // Populate Shopping List
+      renderShoppingList(data.shopping_list || []);
+      step3Section.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function renderShoppingList(items) {
+      shoppingListContainer.innerHTML = '';
+      if (items.length === 0) {
+        shoppingListContainer.innerHTML = `
+          <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-1">
+            <span class="text-xl">🎉</span>
+            <p class="text-xs font-bold text-emerald-300">Zero Missing Items!</p>
+            <p class="text-[11px] text-slate-400">You have 100% of the core ingredients required for these recipes.</p>
+          </div>
+        `;
+        return;
+      }
+
+      items.forEach((item, idx) => {
+        const row = document.createElement('div');
+        row.className = "p-3 rounded-2xl bg-slate-950/70 border border-slate-800 text-xs flex items-center justify-between gap-2 group transition hover:border-slate-700 cursor-pointer";
+        row.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <input type="checkbox" id="shop_${idx}" class="accent-amber-500 w-4 h-4 rounded cursor-pointer" />
+            <label for="shop_${idx}" class="cursor-pointer">
+              <span class="font-bold text-white capitalize block item-title">${item.item}</span>
+              <span class="text-[10px] text-slate-400 truncate block max-w-[170px]">For: ${item.needed_for_recipes.join(', ')}</span>
+            </label>
+          </div>
+          <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-900 text-amber-300 border border-slate-800">${item.category}</span>
+        `;
+
+        const checkbox = row.querySelector('input');
+        const title = row.querySelector('.item-title');
+        checkbox.addEventListener('change', () => {
+          playSound('pop');
+          if (checkbox.checked) {
+            title.classList.add('scratch-off');
+          } else {
+            title.classList.remove('scratch-off');
+          }
+        });
+
+        shoppingListContainer.appendChild(row);
+      });
+    }
+
+    // -------------------------------------------------------------
+    // 11. Polite WhatsApp Share & Copy Grocery Checklist
+    // -------------------------------------------------------------
+    copyListBtn.addEventListener('click', () => {
+      const items = Array.from(shoppingListContainer.querySelectorAll('.item-title:not(.scratch-off)')).map(el => "• " + el.innerText);
+      if (items.length === 0) {
+        alert("Shopping list is empty or all items are already checked off!");
+        return;
+      }
+      const text = `🛒 RasoiAI Grocery Checklist:\n${items.join('\n')}\n\n(Note: Masala Dabba spices & oil are already available at home!)`;
+      navigator.clipboard.writeText(text);
+      playSound('pop');
+      showToast("Checklist copied to clipboard! 📋");
+    });
+
+    whatsappShareBtn.addEventListener('click', () => {
+      const items = Array.from(shoppingListContainer.querySelectorAll('.item-title:not(.scratch-off)')).map(el => "• " + el.innerText);
+      if (items.length === 0) {
+        alert("All items already checked off or list is empty!");
+        return;
+      }
+      const politeMessage = 
+`Namaste! 🙏
+Please help pick up these grocery items for our kitchen today:
+
+${items.join('\n')}
+
+(Note: All basic spices, haldi, salt & oil are already available in our Masala Dabba!)
+Dhanyavaad! ✨`;
+
+      const encoded = encodeURIComponent(politeMessage);
+      window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+      playSound('pop');
+    });
+
+    // -------------------------------------------------------------
+    // 12. Modal Handlers: Cook Along Assistant
+    // -------------------------------------------------------------
+    function launchCookAlong(recipe) {
+      activeRecipeForCooking = recipe;
+      currentCookingStep = 0;
+      cookRecipeTitle.innerText = recipe.title;
+      cookRecipeHindi.innerText = recipe.hindi_title || '';
+      cookDifficultyBadge.innerText = `${recipe.difficulty} • ${recipe.prep_time_minutes} mins • ${recipe.servings} Servings`;
+
+      renderCookingStep();
+      cookAlongModal.classList.remove('hidden');
+      playSound('chime');
+    }
+
+    function renderCookingStep() {
+      if (!activeRecipeForCooking) return;
+      const totalSteps = activeRecipeForCooking.instructions.length;
+      cookStepCounter.innerText = `Step ${currentCookingStep + 1} of ${totalSteps}`;
+      const percent = Math.round(((currentCookingStep + 1) / totalSteps) * 100);
+      cookStepPercent.innerText = `${percent}% completed`;
+      cookProgressBar.style.width = `${percent}%`;
+
+      cookStepInstruction.innerText = activeRecipeForCooking.instructions[currentCookingStep];
+
+      // Reset timer for 3 mins
+      resetStepTimer(180);
+
+      prevStepBtn.disabled = currentCookingStep === 0;
+      prevStepBtn.classList.toggle('opacity-40', currentCookingStep === 0);
+
+      if (currentCookingStep === totalSteps - 1) {
+        nextStepBtn.innerHTML = `<span>Finish Cooking! 🍽️</span>`;
+      } else {
+        nextStepBtn.innerHTML = `<span>Next Step</span> →`;
+      }
+    }
+
+    prevStepBtn.addEventListener('click', () => {
+      if (currentCookingStep > 0) {
+        currentCookingStep--;
+        renderCookingStep();
+        playSound('pop');
+      }
+    });
+
+    nextStepBtn.addEventListener('click', () => {
+      if (!activeRecipeForCooking) return;
+      if (currentCookingStep < activeRecipeForCooking.instructions.length - 1) {
+        currentCookingStep++;
+        renderCookingStep();
+        playSound('pop');
+      } else {
+        // Complete cooking celebration!
+        cookAlongModal.classList.add('hidden');
+        triggerCelebrationConfetti();
+        showToast("Bhojan Taiyyar Hai! Congratulations Chef! 🙏", "🍲");
+      }
+    });
+
+    closeCookModalBtn.addEventListener('click', () => {
+      clearInterval(cookingTimerInterval);
+      cookAlongModal.classList.add('hidden');
+    });
+
+    // Integrated Step Timer Logic
+    function resetStepTimer(seconds = 180) {
+      clearInterval(cookingTimerInterval);
+      cookingTimerRemainingSeconds = seconds;
+      updateTimerDisplay();
+      timerToggleBtn.innerText = "Start";
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(cookingTimerRemainingSeconds / 60);
+      const secs = cookingTimerRemainingSeconds % 60;
+      timerDisplay.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    timerToggleBtn.addEventListener('click', () => {
+      if (timerToggleBtn.innerText === "Start") {
+        timerToggleBtn.innerText = "Pause";
+        cookingTimerInterval = setInterval(() => {
+          if (cookingTimerRemainingSeconds > 0) {
+            cookingTimerRemainingSeconds--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(cookingTimerInterval);
+            timerToggleBtn.innerText = "Done";
+            playSound('bell');
+            showToast("Timer completed! Check your pan! 🔔");
+          }
+        }, 1000);
+      } else {
+        clearInterval(cookingTimerInterval);
+        timerToggleBtn.innerText = "Start";
+      }
+    });
+
+    timerResetBtn.addEventListener('click', () => {
+      resetStepTimer(180);
+    });
+
+    // Voice Narration (Text-to-Speech)
+    speakStepBtn.addEventListener('click', () => {
+      if (!('speechSynthesis' in window)) {
+        alert("Text-to-speech is not supported in your browser.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const textToRead = `Step ${currentCookingStep + 1}. ${cookStepInstruction.innerText}`;
+      const utterance = new SpeechSynthesisUtterance(textToRead);
+      utterance.rate = 0.95;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+      showToast("Reading step alout... 🎙️");
+    });
+
+    // -------------------------------------------------------------
+    // 13. Masala Dabba Modal Handlers
+    // -------------------------------------------------------------
+    openMasalaDabbaBtn.addEventListener('click', () => {
+      masalaDabbaModal.classList.remove('hidden');
+      playSound('pop');
+    });
+    closeMasalaModalBtn.addEventListener('click', () => masalaDabbaModal.classList.add('hidden'));
+    gotItMasalaBtn.addEventListener('click', () => masalaDabbaModal.classList.add('hidden'));
+
+    // Initialize Lucide Icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
