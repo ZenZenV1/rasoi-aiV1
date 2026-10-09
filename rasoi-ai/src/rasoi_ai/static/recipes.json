@@ -1,0 +1,1199 @@
+{
+  "recipes": [
+    {
+      "id": "rec_paneer_bhurji",
+      "title": "Amritsari Paneer Bhurji",
+      "hindi_title": "अमृतसरी पनीर भुर्जी",
+      "core_ingredients": [
+        "paneer",
+        "onions",
+        "tomatoes",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "capsicum",
+        "coriander",
+        "kasuri methi",
+        "butter"
+      ],
+      "prep_time_minutes": 15,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "quick",
+        "high-protein",
+        "breakfast",
+        "dinner"
+      ],
+      "instructions": [
+        "Crumble fresh paneer with your fingers.",
+        "Heat oil or butter in a kadai. Saute chopped onions, green chillies, and ginger until translucent.",
+        "Add chopped tomatoes, haldi, red chilli powder, and salt. Cook until mushy and oil separates.",
+        "Toss in crumbled paneer, mix gently on medium heat for 2-3 minutes. Garnish with chopped hara dhaniya and serve hot with parathas."
+      ]
+    },
+    {
+      "id": "rec_kadai_paneer",
+      "title": "Dhaba Style Kadai Paneer",
+      "hindi_title": "ढाबा स्टाइल कड़ाही पनीर",
+      "core_ingredients": [
+        "paneer",
+        "capsicum",
+        "onions",
+        "tomatoes"
+      ],
+      "optional_ingredients": [
+        "ginger",
+        "garlic",
+        "kasuri methi",
+        "fresh cream"
+      ],
+      "prep_time_minutes": 25,
+      "difficulty": "Medium",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "curry",
+        "dinner",
+        "restaurant-style"
+      ],
+      "instructions": [
+        "Cut paneer, onions, and capsicum into 1-inch square cubes/petals.",
+        "Make a rich tomato-onion-ginger puree and cook in a pan with whole spices until thick.",
+        "Saute capsicum and onion cubes in a separate pan until slightly charred but crisp.",
+        "Combine the gravy with sauteed veggies and paneer cubes. Simmer for 4 minutes and finish with crushed kasuri methi."
+      ]
+    },
+    {
+      "id": "rec_matar_paneer",
+      "title": "Homestyle Matar Paneer",
+      "hindi_title": "घर जैसा मटर पनीर",
+      "core_ingredients": [
+        "paneer",
+        "green peas",
+        "tomatoes",
+        "onions"
+      ],
+      "optional_ingredients": [
+        "ginger",
+        "garlic",
+        "coriander",
+        "cream"
+      ],
+      "prep_time_minutes": 25,
+      "difficulty": "Easy",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "curry",
+        "winter-special",
+        "lunch"
+      ],
+      "instructions": [
+        "Boil or thaw green peas. Cut paneer into cubes.",
+        "Saute onion-tomato-ginger paste with basic spices (haldi, dhaniya, mirch).",
+        "Add peas and 1 cup water; bring gravy to a gentle simmer for 7 minutes.",
+        "Slide in paneer cubes and simmer for another 3 minutes. Serve with roti or jeera rice."
+      ]
+    },
+    {
+      "id": "rec_palak_paneer",
+      "title": "Desi Palak Paneer",
+      "hindi_title": "देसी पालक पनीर",
+      "core_ingredients": [
+        "palak",
+        "paneer",
+        "tomatoes",
+        "onions"
+      ],
+      "optional_ingredients": [
+        "garlic",
+        "ginger",
+        "green chillies",
+        "cream",
+        "kasuri methi"
+      ],
+      "prep_time_minutes": 30,
+      "difficulty": "Medium",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "iron-rich",
+        "curry",
+        "healthy"
+      ],
+      "instructions": [
+        "Blanch fresh spinach leaves in boiling water for 2 minutes, then transfer to cold water and blend into a bright green puree.",
+        "In a pan, cook finely chopped garlic, onions, and tomatoes until soft.",
+        "Add the palak puree and simmer with salt and garam masala for 5 minutes.",
+        "Gently stir in paneer cubes and a dollop of fresh cream or butter."
+      ]
+    },
+    {
+      "id": "rec_dahi_tadka",
+      "title": "Creamy Dahi Tadka",
+      "hindi_title": "दही तड़का",
+      "core_ingredients": [
+        "dahi",
+        "onions",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "curry leaves",
+        "garlic",
+        "coriander"
+      ],
+      "prep_time_minutes": 10,
+      "difficulty": "Very Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "10-minute",
+        "comfort-food",
+        "lazy-dinner"
+      ],
+      "instructions": [
+        "Whisk thick curd (dahi) in a bowl with salt until smooth.",
+        "Heat 1 tbsp ghee or oil in a tadka pan. Add rai, jeera, chopped garlic, curry leaves, and green chillies.",
+        "Add sliced onions and saute till golden brown, followed by a pinch of haldi and kashmiri lal mirch.",
+        "Turn off heat and pour the sizzling tadka directly over the whisked curd. Mix and serve immediately with hot rotis."
+      ]
+    },
+    {
+      "id": "rec_dahi_kadhi",
+      "title": "Traditional Besan Dahi Kadhi",
+      "hindi_title": "पारंपरिक बेसन दही कढ़ी",
+      "core_ingredients": [
+        "dahi",
+        "besan"
+      ],
+      "optional_ingredients": [
+        "curry leaves",
+        "ginger",
+        "green chillies",
+        "methi seeds"
+      ],
+      "prep_time_minutes": 25,
+      "difficulty": "Medium",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "comfort-food",
+        "lunch",
+        "gut-healthy"
+      ],
+      "instructions": [
+        "Whisk sour dahi and besan together with 3 cups water, haldi, and salt until lump-free.",
+        "Bring mixture to a boil in a deep vessel on medium flame, stirring continuously so curd does not split.",
+        "Simmer for 15-20 minutes until thick and aromatic.",
+        "Temper with ghee, rai, jeera, methi seeds, hing, dry red chillies, and curry leaves. Pour over kadhi."
+      ]
+    },
+    {
+      "id": "rec_dahi_baingan",
+      "title": "Odia / Kashmiri Dahi Baingan",
+      "hindi_title": "दही बैंगन",
+      "core_ingredients": [
+        "baingan",
+        "dahi"
+      ],
+      "optional_ingredients": [
+        "curry leaves",
+        "ginger",
+        "green chillies"
+      ],
+      "prep_time_minutes": 20,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "regional",
+        "quick",
+        "tangy"
+      ],
+      "instructions": [
+        "Slice brinjal (baingan) into round discs, rub with salt and haldi, and pan-fry in oil until tender.",
+        "Whisk dahi with salt and roasted jeera powder in a serving dish.",
+        "Arrange the fried brinjal slices inside the yogurt.",
+        "Temper with mustard seeds, curry leaves, and hing in hot oil, and pour on top."
+      ]
+    },
+    {
+      "id": "rec_aloo_shimla",
+      "title": "Dry Aloo Shimla Mirch",
+      "hindi_title": "सूखी आलू शिमला मिर्च",
+      "core_ingredients": [
+        "potatoes",
+        "capsicum",
+        "onions",
+        "tomatoes"
+      ],
+      "optional_ingredients": [
+        "green chillies",
+        "ginger",
+        "coriander",
+        "amchur"
+      ],
+      "prep_time_minutes": 20,
+      "difficulty": "Easy",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "lunchbox",
+        "tiffin",
+        "quick"
+      ],
+      "instructions": [
+        "Cut potatoes and capsicum into matching bite-sized cubes.",
+        "Heat oil, crackle jeera and hing, then add potatoes and saute covered until 80% tender.",
+        "Add onions, tomatoes, haldi, dhaniya powder, and red chilli powder.",
+        "Add capsicum last to keep its crunch. Cook uncovered for 4-5 minutes, finish with amchur (dry mango powder) and coriander."
+      ]
+    },
+    {
+      "id": "rec_jeera_aloo",
+      "title": "Halwai-Style Jeera Aloo",
+      "hindi_title": "हलवाई स्टाइल जीरा आलू",
+      "core_ingredients": [
+        "potatoes",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "ginger",
+        "coriander",
+        "lemon",
+        "amchur"
+      ],
+      "prep_time_minutes": 15,
+      "difficulty": "Very Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "15-minute",
+        "fasting-friendly",
+        "staple"
+      ],
+      "instructions": [
+        "Boil, peel, and dice potatoes into cubes.",
+        "Heat 2 tbsp oil or ghee. Add a generous tablespoon of jeera, crushed ginger, and green chillies.",
+        "Add potatoes, haldi, salt, and dhaniya powder. Toss on high heat until the edges turn golden and crisp.",
+        "Squeeze fresh lemon juice, sprinkle chopped fresh dhaniya, and serve."
+      ]
+    },
+    {
+      "id": "rec_bhindi_masala",
+      "title": "Crispy Kurkuri Bhindi Masala",
+      "hindi_title": "कुरकुरी भिंडी मसाला",
+      "core_ingredients": [
+        "okra",
+        "onions"
+      ],
+      "optional_ingredients": [
+        "tomatoes",
+        "green chillies",
+        "amchur",
+        "ajwain"
+      ],
+      "prep_time_minutes": 20,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "crispy",
+        "tiffin",
+        "popular"
+      ],
+      "instructions": [
+        "Wash and thoroughly dry bhindi with a towel before slicing into 1-inch rounds to prevent sliminess.",
+        "Heat oil in a wide pan, crackle ajwain and jeera, then saute sliced onions till soft.",
+        "Add bhindi and cook on medium flame WITHOUT covering to keep it crisp.",
+        "Once cooked, add haldi, dhaniya powder, amchur, and salt. Toss for 2 minutes."
+      ]
+    },
+    {
+      "id": "rec_aloo_gobi_matar",
+      "title": "Homestyle Aloo Gobi Matar",
+      "hindi_title": "आलू गोभी मटर",
+      "core_ingredients": [
+        "cauliflower",
+        "potatoes",
+        "green peas",
+        "tomatoes",
+        "onions"
+      ],
+      "optional_ingredients": [
+        "ginger",
+        "coriander",
+        "garlic",
+        "kasuri methi"
+      ],
+      "prep_time_minutes": 25,
+      "difficulty": "Easy",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "winter",
+        "curry",
+        "classic"
+      ],
+      "instructions": [
+        "Cut cauliflower into florets and potatoes into wedges.",
+        "Shallow fry florets and potatoes in 2 tbsp oil until light golden and set aside.",
+        "In same pan, saute chopped onion, ginger-garlic paste, and tomatoes with dry masalas.",
+        "Add green peas, fried veggies, splash of water, cover and cook on low heat until fork-tender."
+      ]
+    },
+    {
+      "id": "rec_baingan_bharta",
+      "title": "Smoky Punjabi Baingan Bharta",
+      "hindi_title": "पंजाबी बैंगन का भरता",
+      "core_ingredients": [
+        "baingan",
+        "onions",
+        "tomatoes",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "garlic",
+        "ginger",
+        "coriander",
+        "green peas"
+      ],
+      "prep_time_minutes": 35,
+      "difficulty": "Medium",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "smoky",
+        "punjabi",
+        "dinner"
+      ],
+      "instructions": [
+        "Slit large bharta brinjal, insert garlic cloves, and roast directly on an open gas flame until skin is completely charred.",
+        "Let cool, peel off blackened skin, and mash the flesh with a fork.",
+        "In a kadai, heat mustard oil and saute onions, green chillies, and ginger until brown.",
+        "Add tomatoes and cook until pulpy. Add mashed brinjal, salt, red chilli, and cook for 8-10 minutes on medium heat."
+      ]
+    },
+    {
+      "id": "rec_lauki_chana_dal",
+      "title": "Nutritious Lauki Chana Dal",
+      "hindi_title": "लौकी चना दाल",
+      "core_ingredients": [
+        "lauki",
+        "chana dal",
+        "tomatoes",
+        "onions"
+      ],
+      "optional_ingredients": [
+        "ginger",
+        "green chillies",
+        "coriander"
+      ],
+      "prep_time_minutes": 30,
+      "difficulty": "Easy",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "healthy",
+        "protein",
+        "pressure-cooker"
+      ],
+      "instructions": [
+        "Soak chana dal for 20 minutes. Peel and dice bottle gourd (lauki) into chunks.",
+        "In a pressure cooker, heat oil or ghee, add jeera, hing, chopped onions, and ginger-garlic.",
+        "Add tomatoes, haldi, salt, dal, and lauki with 1.5 cups water.",
+        "Pressure cook for 4-5 whistles on medium flame. Mash slightly and temper with ghee and jeera."
+      ]
+    },
+    {
+      "id": "rec_sev_tamatar",
+      "title": "Kathiyawadi Sev Tamatar Ki Sabzi",
+      "hindi_title": "सेव टमाटर की सब्जी",
+      "core_ingredients": [
+        "tomatoes",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "onions",
+        "ginger",
+        "garlic",
+        "coriander",
+        "sev"
+      ],
+      "prep_time_minutes": 15,
+      "difficulty": "Very Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "15-minute",
+        "gujarati",
+        "spicy"
+      ],
+      "instructions": [
+        "Finely chop ripe juicy tomatoes.",
+        "Heat oil, crackle rai, jeera, and hing. Saute green chillies and ginger.",
+        "Add tomatoes, haldi, dhaniya powder, red chilli powder, salt, and a pinch of sugar. Cook until tomatoes are juicy and soft.",
+        "Add 1/2 cup water to form a spicy gravy. Just before serving, top generously with ratlami or besan sev and fresh coriander."
+      ]
+    },
+    {
+      "id": "rec_mix_veg",
+      "title": "Quick Fridge-Clearout Mix Veg",
+      "hindi_title": "मिक्स वेज सब्जी",
+      "core_ingredients": [
+        "potatoes",
+        "tomatoes",
+        "onions"
+      ],
+      "optional_ingredients": [
+        "cauliflower",
+        "green peas",
+        "capsicum",
+        "carrots",
+        "paneer",
+        "coriander"
+      ],
+      "prep_time_minutes": 25,
+      "difficulty": "Easy",
+      "servings": 4,
+      "diet": "veg",
+      "tags": [
+        "fridge-cleanout",
+        "zero-waste",
+        "everyday"
+      ],
+      "instructions": [
+        "Chop any combination of veggies you have in the fridge (potatoes, capsicum, peas, carrots, cauliflower).",
+        "Saute jeera, onions, and ginger-garlic paste in oil.",
+        "Add chopped tomatoes and dry spices until fragrant.",
+        "Add all veggies, cover with a lid on low flame, and let cook in their own steam until tender."
+      ]
+    },
+    {
+      "id": "rec_dal_tadka",
+      "title": "Dhaba Style Dal Tadka",
+      "hindi_title": "ढाबा स्टाइल दाल तड़का",
+      "core_ingredients": [
+        "toor dal",
+        "tomatoes",
+        "onions",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "garlic",
+        "ginger",
+        "coriander",
+        "curry leaves"
+      ],
+      "prep_time_minutes": 25,
+      "difficulty": "Easy",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "staple",
+        "protein",
+        "comfort"
+      ],
+      "instructions": [
+        "Pressure cook toor dal with water, salt, and haldi for 3 whistles until soft.",
+        "In a kadai, saute onions, green chillies, and ginger in ghee.",
+        "Add tomatoes and cook until soft; pour boiled dal into the gravy and simmer for 5 minutes.",
+        "Top with a sizzling double tadka of ghee, sliced garlic, jeera, hing, and kashmiri chilli."
+      ]
+    },
+    {
+      "id": "rec_tomato_rasam",
+      "title": "Spicy South Indian Tomato Rasam",
+      "hindi_title": "टमाटर रसम",
+      "core_ingredients": [
+        "tomatoes",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "garlic",
+        "curry leaves",
+        "coriander",
+        "black pepper",
+        "tamarind"
+      ],
+      "prep_time_minutes": 15,
+      "difficulty": "Easy",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "immunity",
+        "soup",
+        "south-indian"
+      ],
+      "instructions": [
+        "Crush tomatoes by hand in 2 cups water with salt, haldi, and slit green chillies.",
+        "Pound garlic cloves, whole black peppercorns, and jeera in a mortar pestle.",
+        "Bring tomato water to a gentle boil with the crushed spice mix for 7 minutes.",
+        "Temper with mustard seeds, curry leaves, and hing in ghee. Garnish with lots of hara dhaniya."
+      ]
+    },
+    {
+      "id": "rec_moong_dal_fry",
+      "title": "Light Yellow Moong Dal Fry",
+      "hindi_title": "हल्की मूंग दाल फ्राई",
+      "core_ingredients": [
+        "moong dal",
+        "tomatoes",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "onions",
+        "ginger",
+        "coriander",
+        "ghee"
+      ],
+      "prep_time_minutes": 20,
+      "difficulty": "Very Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "easy-to-digest",
+        "sick-day",
+        "quick"
+      ],
+      "instructions": [
+        "Wash and boil yellow moong dal with haldi and salt for 10-12 minutes.",
+        "Heat ghee in a pan. Add jeera, hing, chopped ginger, and slit chillies.",
+        "Add tomatoes and cook until soft.",
+        "Pour over the boiled dal, bring to one boil, and finish with fresh coriander."
+      ]
+    },
+    {
+      "id": "rec_anda_bhurji",
+      "title": "Mumbai Street Style Anda Bhurji",
+      "hindi_title": "मुंबई स्टाइल अंडा भुर्जी",
+      "core_ingredients": [
+        "eggs",
+        "onions",
+        "tomatoes",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "coriander",
+        "butter",
+        "capsicum",
+        "pav"
+      ],
+      "prep_time_minutes": 12,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "non-veg",
+      "tags": [
+        "quick",
+        "street-food",
+        "high-protein",
+        "breakfast"
+      ],
+      "instructions": [
+        "Whisk 3-4 eggs in a bowl with a pinch of salt.",
+        "Heat butter or oil in a pan. Add finely chopped onions and green chillies, sauteing until translucent.",
+        "Add chopped tomatoes, haldi, pav bhaji masala or red chilli powder, cooking until tomatoes soften.",
+        "Pour whisked eggs into the pan on medium-low flame. Scramble gently until soft and fluffy. Garnish with coriander and serve with buttered pav or rotis."
+      ]
+    },
+    {
+      "id": "rec_egg_curry",
+      "title": "Tariwali Desi Egg Curry",
+      "hindi_title": "तरीवाली देसी अंडा करी",
+      "core_ingredients": [
+        "eggs",
+        "onions",
+        "tomatoes"
+      ],
+      "optional_ingredients": [
+        "potatoes",
+        "ginger",
+        "garlic",
+        "coriander"
+      ],
+      "prep_time_minutes": 25,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "non-veg",
+      "tags": [
+        "curry",
+        "protein",
+        "dinner"
+      ],
+      "instructions": [
+        "Hard boil 4 eggs, peel them, make tiny slits, and shallow fry in 1 tsp oil with haldi and red chilli until blistered.",
+        "In same pan, cook onion-ginger-garlic paste until deep golden brown.",
+        "Add tomato puree and spices; cook until oil floats on top.",
+        "Add 1 cup water, slide in fried eggs, and simmer for 5-7 minutes. Serve with hot steamed rice."
+      ]
+    },
+    {
+      "id": "rec_bread_omelette",
+      "title": "Masala Bread Omelette",
+      "hindi_title": "मसाला ब्रेड ऑमलेट",
+      "core_ingredients": [
+        "eggs",
+        "bread",
+        "onions",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "tomatoes",
+        "coriander",
+        "butter",
+        "cheese"
+      ],
+      "prep_time_minutes": 8,
+      "difficulty": "Very Easy",
+      "servings": 1,
+      "diet": "non-veg",
+      "tags": [
+        "10-minute",
+        "breakfast",
+        "snack"
+      ],
+      "instructions": [
+        "Whisk 2 eggs with finely chopped onions, green chillies, coriander, salt, and haldi.",
+        "Melt butter on a tawa, pour the egg mix evenly.",
+        "Dip 2 bread slices into the wet egg, flip them over, and let cook for 2 minutes.",
+        "Fold the egg edges over the bread, flip the whole sandwich, and toast until golden and crisp."
+      ]
+    },
+    {
+      "id": "rec_besan_chilla",
+      "title": "Crispy Veggie Besan Chilla",
+      "hindi_title": "बेसन का चीला",
+      "core_ingredients": [
+        "besan",
+        "onions",
+        "tomatoes",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "coriander",
+        "ajwain",
+        "paneer",
+        "capsicum"
+      ],
+      "prep_time_minutes": 15,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "gluten-free",
+        "healthy",
+        "breakfast"
+      ],
+      "instructions": [
+        "In a bowl, mix 1 cup besan with water, haldi, ajwain, and salt to form a pourable pancake batter.",
+        "Fold in finely chopped onions, tomatoes, chillies, and fresh coriander.",
+        "Heat a tawa with a drop of oil. Pour a ladle of batter and spread into a thin circle.",
+        "Drizzle oil around edges, flip when bubbles appear, and cook both sides until golden-brown and crisp."
+      ]
+    },
+    {
+      "id": "rec_kanda_poha",
+      "title": "Authentic Kanda Batata Poha",
+      "hindi_title": "कांदा बटाटा पोहा",
+      "core_ingredients": [
+        "poha",
+        "onions",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "potatoes",
+        "curry leaves",
+        "peanuts",
+        "lemon",
+        "coriander"
+      ],
+      "prep_time_minutes": 15,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "maharashtrian",
+        "breakfast",
+        "light"
+      ],
+      "instructions": [
+        "Rinse thick poha in a colander under running water for 30 seconds; let it rest with haldi and salt.",
+        "Heat oil in a pan, fry peanuts until crunchy, and set aside.",
+        "In the same oil, crackle rai, curry leaves, and green chillies. Saute diced potatoes and sliced onions until soft.",
+        "Gently mix in softened poha, cover for 2 minutes on low steam, and finish with a squeeze of fresh lemon juice and coriander."
+      ]
+    },
+    {
+      "id": "rec_rava_upma",
+      "title": "South Indian Veggie Rava Upma",
+      "hindi_title": "रवा उपमा",
+      "core_ingredients": [
+        "suji",
+        "onions",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "curry leaves",
+        "ginger",
+        "carrots",
+        "green peas",
+        "ghee",
+        "cashews"
+      ],
+      "prep_time_minutes": 15,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "breakfast",
+        "comfort",
+        "quick"
+      ],
+      "instructions": [
+        "Dry roast suji (semolina) in a pan on medium flame for 4 minutes until fragrant.",
+        "In another pan, heat ghee or oil, add mustard seeds, chana dal, curry leaves, green chillies, and ginger.",
+        "Saute onions and any available veggies (carrots/peas) until soft.",
+        "Add 2.5 cups water and salt, bring to a rolling boil, then gradually whisk in roasted suji to avoid lumps. Cook covered for 3 minutes."
+      ]
+    },
+    {
+      "id": "rec_aloo_paratha",
+      "title": "Punjabi Stuffed Aloo Paratha",
+      "hindi_title": "पंजाबी आलू पराठा",
+      "core_ingredients": [
+        "atta",
+        "potatoes",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "coriander",
+        "onions",
+        "amchur",
+        "ajwain",
+        "butter",
+        "dahi"
+      ],
+      "prep_time_minutes": 25,
+      "difficulty": "Medium",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "comfort-food",
+        "breakfast",
+        "punjabi"
+      ],
+      "instructions": [
+        "Knead soft dough using whole wheat flour (atta), water, and salt.",
+        "Boil, peel, and mash potatoes thoroughly with chopped chillies, coriander, amchur, and salt.",
+        "Roll a small dough ball, place potato stuffing inside, seal edges, and roll out gently.",
+        "Roast on a hot tawa with generous ghee or butter until both sides have golden-brown spots. Serve with cold dahi."
+      ]
+    },
+    {
+      "id": "rec_methi_thepla",
+      "title": "Gujarati Methi Thepla",
+      "hindi_title": "गुजराती मेथी थेपला",
+      "core_ingredients": [
+        "atta",
+        "methi",
+        "dahi"
+      ],
+      "optional_ingredients": [
+        "besan",
+        "ajwain",
+        "green chillies",
+        "sesame seeds"
+      ],
+      "prep_time_minutes": 20,
+      "difficulty": "Easy",
+      "servings": 3,
+      "diet": "veg",
+      "tags": [
+        "travel-food",
+        "gujarati",
+        "healthy"
+      ],
+      "instructions": [
+        "Finely chop fresh methi leaves.",
+        "In a mixing bowl, combine atta, 2 tbsp besan, methi, dahi, haldi, red chilli, ajwain, and 1 tsp oil.",
+        "Knead into a smooth soft dough without much extra water.",
+        "Roll out thin discs and cook on a tawa with oil on high flame for 30 seconds each side to keep them soft."
+      ]
+    },
+    {
+      "id": "rec_curd_rice",
+      "title": "South Indian Tempered Curd Rice",
+      "hindi_title": "तड़का दही चावल (Curd Rice)",
+      "core_ingredients": [
+        "dahi",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "curry leaves",
+        "ginger",
+        "milk",
+        "pomegranate",
+        "coriander",
+        "mustard seeds"
+      ],
+      "prep_time_minutes": 10,
+      "difficulty": "Very Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "gut-healthy",
+        "cooling",
+        "comfort"
+      ],
+      "instructions": [
+        "Mash cooked soft rice in a bowl. Add fresh dahi, a splash of milk (to prevent souring), and salt.",
+        "Heat oil or ghee in a tadka pan. Add rai, hing, ginger, green chillies, and fresh curry leaves.",
+        "Pour sizzling tadka over the curd rice.",
+        "Mix well and serve chilled or at room temperature."
+      ]
+    },
+    {
+      "id": "rec_masala_maggi",
+      "title": "Street Style Veggie Masala Noodles",
+      "hindi_title": "स्ट्रीट स्टाइल वेज मसाला मैगी",
+      "core_ingredients": [
+        "onions",
+        "tomatoes",
+        "green chillies"
+      ],
+      "optional_ingredients": [
+        "capsicum",
+        "green peas",
+        "butter",
+        "cheese"
+      ],
+      "prep_time_minutes": 10,
+      "difficulty": "Very Easy",
+      "servings": 1,
+      "diet": "veg",
+      "tags": [
+        "midnight-snack",
+        "quick",
+        "hostel-classic"
+      ],
+      "instructions": [
+        "Melt butter in a pan and saute finely chopped onions, chillies, and capsicum.",
+        "Add chopped tomatoes and a pinch of haldi and garam masala.",
+        "Add 1.5 cups water and the tastemaker spice packet, bringing to a boil.",
+        "Break noodle cake into the broth and cook for 2-3 minutes until sauce clings to the noodles."
+      ]
+    },
+    {
+      "id": "rec_cabbage_shimla",
+      "title": "Bandra Style Cabbage & Capsicum Stir-Fry",
+      "hindi_title": "पत्तागोभी शिमला मिर्च की सब्जी",
+      "core_ingredients": [
+        "cabbage",
+        "capsicum",
+        "tomatoes"
+      ],
+      "optional_ingredients": [
+        "coriander",
+        "green chillies"
+      ],
+      "prep_time_minutes": 15,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "quick",
+        "crunchy",
+        "healthy",
+        "dinner"
+      ],
+      "instructions": [
+        "Finely shred fresh cabbage and dice capsicum into matching strips.",
+        "Heat 1 tbsp oil in a pan, crackle mustard seeds, jeera, and slit green chillies.",
+        "Add chopped tomatoes, haldi, and red chilli powder for 2 minutes.",
+        "Toss in shredded cabbage and capsicum on high heat for 3-4 minutes so they stay crisp. Serve hot with rotis."
+      ]
+    },
+    {
+      "id": "rec_cabbage_sambharo",
+      "title": "Gujarati Cabbage & Bell Pepper Sambharo",
+      "hindi_title": "पत्तागोभी संभारो (Warm Salad)",
+      "core_ingredients": [
+        "cabbage",
+        "capsicum"
+      ],
+      "optional_ingredients": [
+        "green chillies",
+        "lemon",
+        "mustard seeds"
+      ],
+      "prep_time_minutes": 10,
+      "difficulty": "Very Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "10-minute",
+        "gujarati",
+        "warm-salad",
+        "crunchy"
+      ],
+      "instructions": [
+        "Shred cabbage and slice capsicum into thin ribbons.",
+        "Heat 1 tsp oil in a kadai, crackle rai (mustard seeds), hing, and green chillies.",
+        "Add cabbage and capsicum, haldi and salt. Stir-fry for only 2 minutes—keep it crunchy!",
+        "Turn off flame, add a squeeze of fresh lemon juice, and serve as a warm side salad."
+      ]
+    },
+    {
+      "id": "rec_fruit_chaat",
+      "title": "Delhi Street Style Fresh Fruit Chaat",
+      "hindi_title": "दिल्ली स्टाइल फ्रूट चाट",
+      "core_ingredients": [
+        "apples",
+        "lemon"
+      ],
+      "optional_ingredients": [
+        "pineapple",
+        "strawberries",
+        "grapes",
+        "grapefruit",
+        "chaat masala"
+      ],
+      "prep_time_minutes": 8,
+      "difficulty": "Very Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "no-cook",
+        "healthy",
+        "refreshing",
+        "immunity"
+      ],
+      "instructions": [
+        "Chop apples, pineapple, strawberries, and grapes into bite-sized cubes in a large bowl.",
+        "Sprinkle generous chaat masala, roasted cumin powder, and black salt.",
+        "Squeeze fresh lemon juice over the fruits.",
+        "Toss gently and serve chilled."
+      ]
+    },
+    {
+      "id": "rec_broccoli_fry",
+      "title": "Crispy Spiced Masala Broccoli",
+      "hindi_title": "मसाला ब्रोकोली फ्राई",
+      "core_ingredients": [
+        "broccoli",
+        "tomatoes"
+      ],
+      "optional_ingredients": [
+        "green chillies",
+        "lemon",
+        "garlic"
+      ],
+      "prep_time_minutes": 12,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "high-fiber",
+        "modern-indian",
+        "quick"
+      ],
+      "instructions": [
+        "Cut broccoli into bite-sized florets.",
+        "Heat 1 tbsp oil in a pan, add jeera and minced garlic.",
+        "Add chopped tomatoes, haldi, and red chilli powder.",
+        "Toss in broccoli florets, splash 2 tbsp water, cover and cook for 4-5 minutes until tender-crisp."
+      ]
+    },
+    {
+      "id": "rec_palak_tamatar",
+      "title": "Desi Palak Tamatar Ki Sabzi",
+      "hindi_title": "पालक टमाटर की सब्जी",
+      "core_ingredients": [
+        "palak",
+        "tomatoes"
+      ],
+      "optional_ingredients": [
+        "garlic",
+        "green chillies",
+        "onions"
+      ],
+      "prep_time_minutes": 15,
+      "difficulty": "Easy",
+      "servings": 2,
+      "diet": "veg",
+      "tags": [
+        "iron-rich",
+        "quick",
+        "everyday"
+      ],
+      "instructions": [
+        "Wash and roughly chop fresh leafy spinach (palak).",
+        "Heat oil in a kadai, crackle jeera, sliced garlic, and slit green chillies.",
+        "Add chopped tomatoes and cook until soft and pulpy.",
+        "Add chopped spinach and salt; cook for 3-4 minutes until leaves wilt and absorb the tangy tomato flavor."
+      ]
+    }
+  ],
+  "pantry_staples": [
+    "asafoetida",
+    "chini",
+    "cooking oil",
+    "coriander powder",
+    "cumin seeds",
+    "dhaniya powder",
+    "garam masala",
+    "ghee",
+    "haldi",
+    "hing",
+    "jeera",
+    "kashmiri mirch",
+    "lal mirch",
+    "mustard oil",
+    "mustard seeds",
+    "namak",
+    "oil",
+    "pani",
+    "rai",
+    "red chilli powder",
+    "salt",
+    "sarson",
+    "sugar",
+    "tel",
+    "turmeric",
+    "water"
+  ],
+  "popular_ingredients": [
+    {
+      "name": "tomatoes",
+      "hindi_name": "टमाटर / Tamatar",
+      "category": "Vegetables"
+    },
+    {
+      "name": "onions",
+      "hindi_name": "प्याज / Pyaz",
+      "category": "Vegetables"
+    },
+    {
+      "name": "potatoes",
+      "hindi_name": "आलू / Aloo",
+      "category": "Vegetables"
+    },
+    {
+      "name": "green chillies",
+      "hindi_name": "हरी मिर्च / Hari Mirch",
+      "category": "Produce"
+    },
+    {
+      "name": "ginger",
+      "hindi_name": "अदरक / Adrak",
+      "category": "Produce"
+    },
+    {
+      "name": "garlic",
+      "hindi_name": "लहसुन / Lahsun",
+      "category": "Produce"
+    },
+    {
+      "name": "coriander",
+      "hindi_name": "हरा धनिया / Hara Dhaniya",
+      "category": "Herbs"
+    },
+    {
+      "name": "curry leaves",
+      "hindi_name": "कढ़ी पत्ता / Kadi Patta",
+      "category": "Herbs"
+    },
+    {
+      "name": "paneer",
+      "hindi_name": "पनीर / Paneer",
+      "category": "Dairy"
+    },
+    {
+      "name": "dahi",
+      "hindi_name": "दही / Curd",
+      "category": "Dairy"
+    },
+    {
+      "name": "milk",
+      "hindi_name": "दूध / Doodh",
+      "category": "Dairy"
+    },
+    {
+      "name": "capsicum",
+      "hindi_name": "शिमला मिर्च / Shimla Mirch",
+      "category": "Vegetables"
+    },
+    {
+      "name": "cauliflower",
+      "hindi_name": "फूलगोभी / Gobi",
+      "category": "Vegetables"
+    },
+    {
+      "name": "green peas",
+      "hindi_name": "मटर / Matar",
+      "category": "Vegetables"
+    },
+    {
+      "name": "okra",
+      "hindi_name": "भिंडी / Bhindi",
+      "category": "Vegetables"
+    },
+    {
+      "name": "spinach",
+      "hindi_name": "पालक / Palak",
+      "category": "Vegetables"
+    },
+    {
+      "name": "lemon",
+      "hindi_name": "नींबू / Nimbu",
+      "category": "Produce"
+    },
+    {
+      "name": "eggs",
+      "hindi_name": "अंडे / Eggs",
+      "category": "Protein"
+    },
+    {
+      "name": "besan",
+      "hindi_name": "बेसन / Gram Flour",
+      "category": "Staples"
+    },
+    {
+      "name": "atta",
+      "hindi_name": "आटा / Wheat Flour",
+      "category": "Staples"
+    },
+    {
+      "name": "poha",
+      "hindi_name": "पोहा / Flattened Rice",
+      "category": "Staples"
+    },
+    {
+      "name": "suji",
+      "hindi_name": "सूजी / Rava",
+      "category": "Staples"
+    },
+    {
+      "name": "toor dal",
+      "hindi_name": "तुअर दाल / Arhar Dal",
+      "category": "Lentils"
+    },
+    {
+      "name": "moong dal",
+      "hindi_name": "मूंग दाल / Moong Dal",
+      "category": "Lentils"
+    },
+    {
+      "name": "bread",
+      "hindi_name": "ब्रेड / Bread",
+      "category": "Bakery"
+    },
+    {
+      "name": "butter",
+      "hindi_name": "मक्खन / Amul Butter",
+      "category": "Dairy"
+    }
+  ]
+}

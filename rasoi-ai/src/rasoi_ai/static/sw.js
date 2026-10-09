@@ -1,10 +1,13 @@
 // RasoiAI Lightweight PWA Service Worker
-const CACHE_NAME = 'rasoi-ai-v1';
+const CACHE_NAME = 'rasoi-ai-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/static/manifest.json',
   '/static/icon-192.png',
-  '/static/icon-512.png'
+  '/static/icon-512.png',
+  '/static/corpus-offline.js',
+  '/static/offline-matcher.js',
+  '/static/recipes.json'
 ];
 
 self.addEventListener('install', (event) => {

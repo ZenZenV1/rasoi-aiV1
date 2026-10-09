@@ -82,6 +82,10 @@
   <!-- Canvas Confetti for Celebrations -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
+  <!-- Offline Dataset & Matcher (bundled - zero network dependency) -->
+  <script src="/static/corpus-offline.js"></script>
+  <script src="/static/offline-matcher.js"></script>
+
   <style>
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -346,6 +350,20 @@
             </button>
           </div>
 
+          <!-- Offline Manual Mode Card -->
+          <div class="glass-card rounded-2xl p-4 border border-slate-700/60 relative overflow-hidden">
+            <div id="networkStatusDot" class="flex items-center gap-2 text-[11px] font-semibold mb-3">
+              <span id="netDotIcon" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="netDotText" class="text-emerald-400">Online — AI Vision Available</span>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-relaxed mb-3">
+              No internet? Use <span class="text-amber-300 font-semibold">Offline Mode</span> — pick ingredients manually and get recipe matches in <span class="text-emerald-400 font-semibold">milliseconds</span> using our bundled dataset. Works on ✈️ Airplane Mode!
+            </p>
+            <button id="offlineModeBtn" class="w-full py-2.5 px-3 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-600 flex items-center justify-center gap-2 transition">
+              <span>📱 Open Offline Ingredient Picker</span>
+            </button>
+          </div>
+
           <!-- Scan Execution Button -->
           <button id="uploadBtn" disabled class="w-full py-4 px-6 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-extrabold text-sm rounded-2xl shadow-xl shadow-amber-500/20 disabled:opacity-40 disabled:cursor-not-allowed transition transform hover:scale-[1.01] flex items-center justify-center gap-2">
             <i data-lucide="sparkles" class="w-4 h-4"></i>
@@ -355,6 +373,50 @@
         </div>
       </div>
     </section>
+
+    <!-- ========================================== -->
+    <!-- OFFLINE INGREDIENT PICKER MODAL            -->
+    <!-- ========================================== -->
+    <div id="offlinePickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+      <div class="glass-panel w-full max-w-2xl rounded-3xl border border-slate-700 p-6 space-y-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <button id="closeOfflineBtn" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl p-1">✕</button>
+        <div>
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>📱</span><span>Offline Ingredient Picker</span>
+            <span class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">No Internet Needed</span>
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">Tap everything you currently have. Recipe matching runs 100% locally on your device — instant results, zero network!</p>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <p class="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-2">🥬 Vegetables</p>
+            <div id="offlineVegChips" class="flex flex-wrap gap-2"></div>
+          </div>
+          <div>
+            <p class="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-2">🧀 Dairy &amp; Protein</p>
+            <div id="offlineDairyChips" class="flex flex-wrap gap-2"></div>
+          </div>
+          <div>
+            <p class="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-2">🌿 Herbs &amp; Produce</p>
+            <div id="offlineHerbChips" class="flex flex-wrap gap-2"></div>
+          </div>
+          <div>
+            <p class="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-2">🍎 Fruits</p>
+            <div id="offlineFruitChips" class="flex flex-wrap gap-2"></div>
+          </div>
+          <div>
+            <p class="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-2">🌾 Grains &amp; Pulses</p>
+            <div id="offlineGrainChips" class="flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+          <span id="offlineSelectedCount" class="text-xs text-emerald-400 font-semibold">0 ingredients selected</span>
+          <button id="offlineConfirmBtn" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 text-xs font-extrabold rounded-xl shadow disabled:opacity-40 disabled:cursor-not-allowed transition hover:scale-105" disabled>
+            ⚡ Match Recipes Offline
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- ========================================== -->
     <!-- STEP 2: INGREDIENT CONFIRMATION GRID -->
@@ -928,6 +990,114 @@
     const webcamCanvas = document.getElementById('webcamCanvas');
     let webcamStream = null;
 
+    // Offline Picker Modal
+    const offlinePickerModal = document.getElementById('offlinePickerModal');
+    const offlineModeBtn = document.getElementById('offlineModeBtn');
+    const closeOfflineBtn = document.getElementById('closeOfflineBtn');
+    const offlineConfirmBtn = document.getElementById('offlineConfirmBtn');
+    const offlineSelectedCount = document.getElementById('offlineSelectedCount');
+    const netDotIcon = document.getElementById('netDotIcon');
+    const netDotText = document.getElementById('netDotText');
+
+    // Track offline-selected ingredients
+    const offlineSelectedItems = new Set();
+
+    // -------------------------------------------------------------
+    // Network Status Detection
+    // -------------------------------------------------------------
+    function updateNetworkStatus() {
+      if (!navigator.onLine) {
+        netDotIcon.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+        netDotText.className = 'text-amber-400';
+        netDotText.innerText = '✈️ Offline — Use Ingredient Picker Below';
+      } else {
+        netDotIcon.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        netDotText.className = 'text-emerald-400';
+        netDotText.innerText = 'Online — AI Vision Available';
+      }
+    }
+    updateNetworkStatus();
+    window.addEventListener('online', updateNetworkStatus);
+    window.addEventListener('offline', updateNetworkStatus);
+
+    // -------------------------------------------------------------
+    // Offline Picker: Populate Chips from Bundled Dataset
+    // -------------------------------------------------------------
+    const OFFLINE_INGREDIENT_CHIPS = {
+      veg:   ['tomatoes','onions','potatoes','capsicum','cabbage','broccoli','palak','cauliflower','peas','bhindi','carrot','beans','lauki','tinda'],
+      dairy: ['paneer','dahi','milk','butter','eggs','chicken'],
+      herb:  ['ginger','green chillies','coriander','garlic','lemon','kasoori methi'],
+      fruit: ['apples','grapes','strawberries','pineapple','grapefruit','oranges'],
+      grain: ['atta','rice','besan','toor dal','moong dal','poha','suji','chana dal','bread']
+    };
+
+    function buildChips(containerId, items) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+      items.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'chip-btn px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-700 bg-slate-900/80 text-slate-300 hover:border-amber-500/60 hover:text-amber-300 transition capitalize';
+        btn.innerText = item;
+        btn.dataset.item = item;
+        btn.addEventListener('click', () => {
+          if (offlineSelectedItems.has(item)) {
+            offlineSelectedItems.delete(item);
+            btn.className = 'chip-btn px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-700 bg-slate-900/80 text-slate-300 hover:border-amber-500/60 hover:text-amber-300 transition capitalize';
+          } else {
+            offlineSelectedItems.add(item);
+            btn.className = 'chip-btn px-3 py-1.5 rounded-xl text-xs font-semibold border border-amber-500 bg-amber-500/20 text-amber-300 transition capitalize';
+          }
+          const count = offlineSelectedItems.size;
+          offlineSelectedCount.innerText = `${count} ingredient${count !== 1 ? 's' : ''} selected`;
+          offlineConfirmBtn.disabled = count === 0;
+          playSound('pop');
+        });
+        container.appendChild(btn);
+      });
+    }
+
+    buildChips('offlineVegChips',   OFFLINE_INGREDIENT_CHIPS.veg);
+    buildChips('offlineDairyChips', OFFLINE_INGREDIENT_CHIPS.dairy);
+    buildChips('offlineHerbChips',  OFFLINE_INGREDIENT_CHIPS.herb);
+    buildChips('offlineFruitChips', OFFLINE_INGREDIENT_CHIPS.fruit);
+    buildChips('offlineGrainChips', OFFLINE_INGREDIENT_CHIPS.grain);
+
+    // Open / Close Offline Modal
+    offlineModeBtn.addEventListener('click', () => {
+      offlinePickerModal.classList.remove('hidden');
+      playSound('pop');
+    });
+    closeOfflineBtn.addEventListener('click', () => {
+      offlinePickerModal.classList.add('hidden');
+    });
+
+    // Confirm offline selection → run local matcher → show results
+    offlineConfirmBtn.addEventListener('click', () => {
+      if (offlineSelectedItems.size === 0) return;
+      offlinePickerModal.classList.add('hidden');
+      playSound('chime');
+
+      // Convert selected items to DetectedIngredient format for the grid
+      const fakeIngredients = Array.from(offlineSelectedItems).map((name, idx) => ({
+        id: `off_${idx}`,
+        name: name,
+        hindi_name: '',
+        category: 'Vegetables',
+        confidence: 1.0,
+        estimated_quantity: null
+      }));
+
+      // Populate confirmation grid
+      populateConfirmationGrid(fakeIngredients, false, null, null, true);
+      showToast(`${offlineSelectedItems.size} items selected — matching recipes offline! ⚡`, '📱');
+
+      // Auto-trigger matching seamlessly
+      setTimeout(() => {
+        findRecipesBtn.click();
+      }, 300);
+    });
+
     // Toast helper
     function showToast(message, icon = '✨') {
       const toast = document.getElementById('toast');
@@ -1084,6 +1254,12 @@
     // -------------------------------------------------------------
     uploadBtn.addEventListener('click', async () => {
       if (!selectedFile) return;
+
+      if (!navigator.onLine) {
+        showToast("✈️ AI Vision requires internet. Use the Offline Picker below!", "⚠️");
+        return;
+      }
+
       uploadBtn.disabled = true;
       uploadBtnText.innerText = "Scanning with Gemini Vision...";
       scannerLaser.classList.remove('hidden');
@@ -1127,10 +1303,32 @@
       }
     });
 
+    // Fallback sample fridge items for offline / instant demo
+    const LOCAL_SAMPLE_FRIDGE = [
+      { id: "mock_1", name: "paneer", hindi_name: "पनीर", category: "Dairy", confidence: 0.98 },
+      { id: "mock_2", name: "capsicum", hindi_name: "शिमला मिर्च", category: "Vegetables", confidence: 0.95 },
+      { id: "mock_3", name: "tomatoes", hindi_name: "टमाटर", category: "Vegetables", confidence: 0.94 },
+      { id: "mock_4", name: "green chillies", hindi_name: "हरी मिर्च", category: "Produce", confidence: 0.92 },
+      { id: "mock_5", name: "dahi", hindi_name: "दही", category: "Dairy", confidence: 0.90 },
+      { id: "mock_6", name: "ginger", hindi_name: "अदरक", category: "Produce", confidence: 0.88 },
+      { id: "mock_7", name: "onions", hindi_name: "प्याज", category: "Vegetables", confidence: 0.96 },
+      { id: "mock_8", name: "coriander", hindi_name: "हरा धनिया", category: "Herbs", confidence: 0.85 }
+    ];
+
     sampleBtn.addEventListener('click', async () => {
       sampleBtn.disabled = true;
       sampleBtn.innerHTML = `<span>Loading Sample Fridge...</span>`;
       playSound('pop');
+
+      if (!navigator.onLine) {
+        // Fast local fallback when offline
+        populateConfirmationGrid(LOCAL_SAMPLE_FRIDGE, true, null, null, true);
+        playSound('chime');
+        showToast("Loaded desi sample fridge offline! ⚡");
+        sampleBtn.disabled = false;
+        sampleBtn.innerHTML = `<span>⚡ Load Desi Sample Fridge (Instant)</span>`;
+        return;
+      }
 
       try {
         const res = await fetch('/api/mock-detect', { method: 'POST' });
@@ -1139,7 +1337,10 @@
         playSound('chime');
         showToast("Loaded classic Indian sample fridge! ✨");
       } catch (err) {
-        alert("Sample loading error: " + err.message);
+        // Fallback to local items if API fails
+        populateConfirmationGrid(LOCAL_SAMPLE_FRIDGE, true, null, null, true);
+        playSound('chime');
+        showToast("Loaded desi sample fridge offline! ⚡");
       } finally {
         sampleBtn.disabled = false;
         sampleBtn.innerHTML = `<span>⚡ Load Desi Sample Fridge (Instant)</span>`;
@@ -1149,11 +1350,30 @@
     // -------------------------------------------------------------
     // 8. Step 2: Confirmation Grid Population
     // -------------------------------------------------------------
-    function populateConfirmationGrid(items, isMock = false) {
+    let isOfflineMode = false; // track whether current session is offline
+
+    function populateConfirmationGrid(items, isMock = false, estServings = null, rationale = null, isOffline = false) {
+      isOfflineMode = isOffline;
       confirmedIngredients.clear();
       items.forEach(item => {
         confirmedIngredients.set(item.name.toLowerCase(), item);
       });
+
+      // Update AI portion estimation display
+      const badge = document.getElementById('servingsBadge');
+      const rationaleEl = document.getElementById('servingsRationale');
+      if (badge && estServings) {
+        badge.innerText = `Serves ~${estServings} Persons`;
+      }
+      if (rationaleEl && rationale) {
+        rationaleEl.innerText = rationale;
+      }
+
+      // Show/hide servingsBox depending on whether estimation is available
+      const servingsBox = document.getElementById('servingsBox');
+      if (servingsBox) {
+        servingsBox.style.display = (isOffline || !estServings) ? 'none' : '';
+      }
 
       renderGrid();
 
@@ -1267,22 +1487,43 @@
       }
 
       findRecipesBtn.disabled = true;
-      findRecipesBtn.innerHTML = `<span>Matching Authentic Recipes...</span>`;
+      findRecipesBtn.innerHTML = `<span>${isOfflineMode ? '⚡ Matching Offline...' : 'Matching Authentic Recipes...'}</span>`;
       playSound('chime');
 
       try {
         const itemsList = Array.from(confirmedIngredients.keys());
-        const res = await fetch('/api/match-recipes', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            confirmed_ingredients: itemsList,
-            diet_preference: currentDiet,
-          }),
-        });
-        const data = await res.json();
+
+        let data;
+
+        if (isOfflineMode || !navigator.onLine) {
+          // --- OFFLINE PATH: run local JS matcher instantly ---
+          data = matchRecipesOffline(itemsList, currentDiet);
+          if (!data) throw new Error("Offline dataset not loaded.");
+        } else {
+          // --- ONLINE PATH: hit the FastAPI backend with offline fallback ---
+          try {
+            const res = await fetch('/api/match-recipes', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                confirmed_ingredients: itemsList,
+                diet_preference: currentDiet,
+              }),
+            });
+            data = await res.json();
+          } catch (netErr) {
+            console.warn("Backend match unreachable, falling back to offline matcher:", netErr);
+            data = matchRecipesOffline(itemsList, currentDiet);
+          }
+        }
+
         currentMatchData = data;
         renderResults(data);
+
+        // Show offline badge in results if applicable
+        if (data.is_offline) {
+          showToast(`${data.total_recipes_found} recipes matched offline in <1ms! ⚡`, '📱');
+        }
 
         // Celebratory Confetti if 100% Ready to Cook dish is unlocked!
         if (data.exact_matches && data.exact_matches.length > 0) {
